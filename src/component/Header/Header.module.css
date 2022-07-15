@@ -1,0 +1,10 @@
+.header_container {
+  display: flex;
+  padding: 0px 20px;
+  align-items: center;
+}
+.app_name {
+  color: #fff;
+  font-size: 25px;
+  font-weight: 700;
+}

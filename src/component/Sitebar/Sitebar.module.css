@@ -1,0 +1,27 @@
+.menu {
+  padding: 25px 0px;
+  display: flex;
+  flex-direction: column;
+}
+.menu_item {
+  display: flex;
+  align-items: center;
+  padding: 5px 20px;
+}
+.sitebar_container {
+  z-index: 1;
+  background-color: #111;
+  box-shadow: 1px 1px 10px #111;
+}
+.link {
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+}
+.link_active {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #fff;
+}
