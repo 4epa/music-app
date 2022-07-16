@@ -9,42 +9,34 @@ import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded';
 import FastForwardRounded from '@mui/icons-material/FastForwardRounded';
 import FastRewindRounded from '@mui/icons-material/FastRewindRounded';
 import style from './AudioContol.module.css';
-import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 import { connect } from 'react-redux/es/exports';
-import { setNextSong, setPrevSong } from '../../redux/audioReducer';
+import { setNextSong, setPrevSong, setVolume } from '../../redux/audioReducer';
+import AudioInfo from './AudioInfo/AudioInfo';
+import CurrentPlaylist from './CurrentPlaylist/CurrentPlaylist';
+import VolumeControl from './VolumeControl/VolumeControl';
 
 const AudioControl = (props) => {
 
   const [isPlayStatus, setIsPlay] = useState(false);
   const [audio, setAudio] = useState(new Audio(''));
-  const [currentTimeAudio, setCurrentTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(audio.currentTime);
   const [timer, setTimer] = useState(false);
   const theme = useTheme();
+
+  audio.volume = props.audioVolume;
 
   useEffect(() => {
     setAudio(new Audio(props.currentAudio.audioFile)) 
   }, [props.currentAudio.audioFile])
 
   const controlStateIsPlay = () => {
-    if (isPlayStatus) {
-      return stopAodio()
-    } else {
-      return playAodio()
-    }
+    isPlayStatus ? stopAodio() : playAodio()
   }
 
   const playAodio = () => {
     setIsPlay(true);
     audio.play();
-    setTimer(setInterval(checkAudioTime, 1000));
-  }
-
-  const checkAudioTime = () => {
-    if (audio.currentTime >= audio.duration) {
-      stopAodio();
-      return setCurrentTime(0)
-    }
-    return setCurrentTime(audio.currentTime)
+    setTimer(setInterval(checkAudioTime, 500));
   }
 
   const stopAodio = () => {
@@ -53,9 +45,18 @@ const AudioControl = (props) => {
     clearInterval(timer);
   }
 
+  const checkAudioTime = () => {
+    if (audio.currentTime >= audio.duration) {
+      stopAodio();
+      return audio.currentTime = 0;
+    }
+    setCurrentTime(audio.currentTime)
+  }
+
   const nextOrPrevSong = (action) => {
     stopAodio()
-    setCurrentTime(0)
+    audio.currentTime = 0;
+    setCurrentTime(audio.currentTime);
     switch (action) {
       case 'next':
         return props.setNextSong(props.currentSongId)
@@ -64,12 +65,17 @@ const AudioControl = (props) => {
     }
   }
 
+  const  handleChange = (event, value) => {
+    setCurrentTime(value)
+    audio.currentTime = value; 
+  }
+
   return (
     <div className="control_panel">
       <div className={style.control_container}>
         <AudioInfo cover={props.currentAudio.cover} title={props.currentAudio.title} author={props.currentAudio.author}/>
-          <div className={style.audio_control}>
-            <Box
+        <div className={style.audio_control}>
+          <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -90,13 +96,13 @@ const AudioControl = (props) => {
               <IconButton onClick={() => nextOrPrevSong('next') } sx={{ padding: '5px' }} aria-label="next song">
                 <FastForwardRounded sx={{ fontSize: '25px', color: '#fff' }}  />
               </IconButton>
-            </Box>
-            <Box sx={{width: '500px', color: theme.palette.mode === 'dark' ? '#fff' : 'rgba(0,0,0,0.87)'}}>
+          </Box>
+          <Box sx={{width: '500px', color: theme.palette.mode === 'dark' ? '#fff' : 'rgba(0,0,0,0.87)'}}>
               <Slider
-                onChange={(_, value) => audio.currentTime = value}
+                onChange={ handleChange }
                 aria-label="time-indicator"
                 size="small"
-                value={currentTimeAudio}
+                value={currentTime}
                 min={0}
                 step={1}
                 max={audio.duration}
@@ -127,43 +133,26 @@ const AudioControl = (props) => {
                   },
                 }}
               />
-            </Box>  
-          </div>
-        <CurrentPlaylist />
+          </Box>  
+        </div>
+        <div className={style.right__controle_containe}>
+          <VolumeControl volume={props.audioVolume} setVolume={props.setVolume} />
+          <CurrentPlaylist />
+        </div>
       </div>
     </div>
   )
 }
 
-const AudioInfo = (props) => {
-  return (
-    <div className={style.info_box} >
-      <div className={style.cover} >
-        <img src={props.cover} alt="#" />
-      </div>
-      <div className={style.description} >
-        <div className={style.audio_title}>{props.title}</div>
-        <div className={style.audio_author}>{props.author}</div>
-      </div>
-    </div>
-  )
-}
-
-const CurrentPlaylist = (props) => {
-  return (
-    <div className={style.playlist_icon}>
-      <PlaylistPlayIcon sx={{fontSize: '30px'}}/>
-    </div>
-  )
-}
 
 const mapStateToProps = (state) => {
   return {
     currentSongId: state.audio.songId,
-    currentAudio: state.audio.currentSong
+    currentAudio: state.audio.currentSong,
+    audioVolume: state.audio.volume
   }
 }
 
-const AudioContolContainer = connect(mapStateToProps, { setNextSong, setPrevSong }) (AudioControl)
+const AudioContolContainer = connect(mapStateToProps, { setNextSong, setPrevSong, setVolume }) (AudioControl)
 
 export default AudioContolContainer;

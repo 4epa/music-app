@@ -5,6 +5,14 @@ import song3 from '../assets/musics/hyperpop_guitar.mp3';
 const SET_CURRENT_SONG = 'SET_CURRENT_SONG';
 const SET_NEXT_SONG = 'SET_NEXT_SONG';
 const SET_PREV_SONG = 'SET_PREV_SONG';
+const SET_VOLUME = 'SET_VOLUME';
+
+export const setVolume = (volume) => {
+  return {
+    type: SET_VOLUME,
+    volume
+  }
+}
 
 export const setCurrentSong = (song) => {
   return {
@@ -54,12 +62,19 @@ const currentPlaylist = [
 const initialState = {
   songId: 0,
   currentSong: currentPlaylist[0],
-  volume: 1,
+  volume: 0.4,
 }
+
+
 
 const audioReducer = (state = initialState, action) => {
   let id = action.songId
   switch (action.type) {
+    case SET_VOLUME:
+      return {
+        ...state,
+        volume: action.volume
+      }
     case SET_CURRENT_SONG:
       return {
         ...state,
@@ -85,3 +100,7 @@ const audioReducer = (state = initialState, action) => {
 }
 
 export default audioReducer;
+
+
+
+

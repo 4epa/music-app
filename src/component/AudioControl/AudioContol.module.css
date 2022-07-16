@@ -41,11 +41,25 @@
   color: #fff;
   text-decoration: underline;
 }
+.right__controle_containe {
+  display: flex;
+}
 .playlist_icon {
-  margin-left: 50px;
+  margin-left: 30px;
   cursor: pointer;
   color: rgba(255, 255, 255, 0.6);
 }
 .playlist_icon:hover {
   color: #fff;
+}
+.volume_icon {
+  cursor: pointer;
+}
+.volume_control {
+  display: flex;
+  align-items: center;
+}
+.volume_control > *:not(:last-child) {
+  margin-right: 10px;
+  z-index: 20;
 }
