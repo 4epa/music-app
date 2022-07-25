@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { useTheme } from '@mui/material/styles';
+import ReactDOM from 'react-dom';
+import { useEffect, useState, useRef } from 'react';
+import { duration, styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import IconButton from '@mui/material/IconButton';
@@ -9,65 +10,65 @@ import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded';
 import FastForwardRounded from '@mui/icons-material/FastForwardRounded';
 import FastRewindRounded from '@mui/icons-material/FastRewindRounded';
 import style from './AudioContol.module.css';
-import { connect } from 'react-redux/es/exports';
-import { setNextSong, setPrevSong, setVolume } from '../../redux/audioReducer';
 import AudioInfo from './AudioInfo/AudioInfo';
 import CurrentPlaylist from './CurrentPlaylist/CurrentPlaylist';
 import VolumeControl from './VolumeControl/VolumeControl';
+import Typography from '@mui/material/Typography';
+
+
 
 const AudioControl = (props) => {
+  
+  const [timer, setTimer] = useState(null);
 
-  const [isPlayStatus, setIsPlay] = useState(false);
-  const [audio, setAudio] = useState(new Audio(''));
-  const [currentTime, setCurrentTime] = useState(audio.currentTime);
-  const [timer, setTimer] = useState(false);
-  const theme = useTheme();
+  const audio = React.createRef();
 
-  audio.volume = props.audioVolume;
+  const checkTime = (curentTime, duration, audio) => {
+    if (curentTime >=  duration) {
+      props.setIsPlay(false)
+      return props.setCurrentTime(0)
+    }
+    return props.setCurrentTime(curentTime)
+  }
+
+  const audioPlay = (audio) => {
+    audio.play()
+    setTimer(setInterval(() => checkTime(audio.currentTime, audio.duration), 1000))
+  }
+
+  const audioStop = (audio) => {
+    audio.pause()
+    setTimer(clearInterval(timer))
+  }
 
   useEffect(() => {
-    setAudio(new Audio(props.currentAudio.audioFile)) 
-  }, [props.currentAudio.audioFile])
+    if (props.audioIsPlay) audioPlay(audio.current)
+    else audioStop(audio.current)
+  }, [props.audioIsPlay])
 
-  const controlStateIsPlay = () => {
-    isPlayStatus ? stopAodio() : playAodio()
-  }
+  useEffect(() => {
+    audio.current.volume = props.volume
+  }, [props.volume])
 
-  const playAodio = () => {
-    setIsPlay(true);
-    audio.play();
-    setTimer(setInterval(checkAudioTime, 500));
-  }
+  const TinyText = styled(Typography)({
+    color: '#fff',
+    fontSize: '14px',
+    opacity: 0.60,
+    fontWeight: 500,
+    letterSpacing: 0.2,
+  });
 
-  const stopAodio = () => {
-    setIsPlay(false);
-    audio.pause();
-    clearInterval(timer);
-  }
-
-  const checkAudioTime = () => {
-    if (audio.currentTime >= audio.duration) {
-      stopAodio();
-      return audio.currentTime = 0;
-    }
-    setCurrentTime(audio.currentTime)
-  }
-
-  const nextOrPrevSong = (action) => {
-    stopAodio()
-    audio.currentTime = 0;
-    setCurrentTime(audio.currentTime);
-    switch (action) {
-      case 'next':
-        return props.setNextSong(props.currentSongId)
-      case 'prev':
-        return props.setPrevSong(props.currentSongId)
-    }
+  function formatDuration(value) {
+    const time = Math.ceil(value);
+    const minute = Math.floor(time / 60);
+    const secondLeft = time - minute * 60;
+    return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
   }
 
   const  handleChange = (event, value) => {
-    setCurrentTime(value)
-    audio.currentTime = value; 
+    let audioFile = audio.current
+    props.setCurrentTime(value)
+    audioFile.currentTime = value
   }
 
   return (
@@ -83,31 +84,31 @@ const AudioControl = (props) => {
                 mt: 0,
               }}
             >
-              <IconButton onClick={() => nextOrPrevSong('prev') } sx={{ padding: '5px' }} aria-label="previous song">
+              <IconButton  sx={{ padding: '5px' }} aria-label="previous song">
                 <FastRewindRounded sx={{ fontSize: '25px', color: '#fff' }} />
               </IconButton>
-              <IconButton sx={{ padding: '5px' }} onClick={ controlStateIsPlay }>
+              <IconButton sx={{ padding: '5px' }}>
                 {
-                  !isPlayStatus
-                  ? <PlayArrowRounded sx={{ fontSize: '30px', color: '#fff' }}/>
-                  : <PauseRounded sx={{ fontSize: '30px', color: '#fff' }}/>
+                  !props.audioIsPlay
+                  ? <PlayArrowRounded onClick={ () => props.setIsPlay(true) } sx={{ fontSize: '30px', color: '#fff' }}/>
+                  : <PauseRounded onClick={ () => props.setIsPlay(false) } sx={{ fontSize: '30px', color: '#fff' }}/>
                 }
               </IconButton>
-              <IconButton onClick={() => nextOrPrevSong('next') } sx={{ padding: '5px' }} aria-label="next song">
+              <IconButton sx={{ padding: '5px' }} aria-label="next song">
                 <FastForwardRounded sx={{ fontSize: '25px', color: '#fff' }}  />
               </IconButton>
           </Box>
-          <Box sx={{width: '500px', color: theme.palette.mode === 'dark' ? '#fff' : 'rgba(0,0,0,0.87)'}}>
+          <Box sx={{width: '500px', color: '#fff'}}>
               <Slider
                 onChange={ handleChange }
                 aria-label="time-indicator"
                 size="small"
-                value={currentTime}
+                value={props.currentAudio.currentTime}
                 min={0}
                 step={1}
-                max={audio.duration}
+                max={props.currentAudio.duration}
                 sx={{
-                  padding: '10px 0px',
+                  padding: '5px 0px',
                   color: '#fff',
                   height: 4,
                   '& .MuiSlider-thumb': {
@@ -117,11 +118,7 @@ const AudioControl = (props) => {
                       boxShadow: '0 2px 12px 0 rgba(0,0,0,0.4)',
                     },
                     '&:hover, &.Mui-focusVisible': {
-                      boxShadow: `0px 0px 0px 8px ${
-                        theme.palette.mode === 'dark'
-                          ? 'rgb(255 255 255 / 16%)'
-                          : 'rgb(0 0 0 / 16%)'
-                      }`,
+                      boxShadow: `0px 0px 0px 8px ${'rgb(255 255 255 / 16%)'}`,
                     },
                     '&.Mui-active': {
                       width: 20,
@@ -134,25 +131,22 @@ const AudioControl = (props) => {
                 }}
               />
           </Box>  
+          <div className={style.timer_container}>
+            <TinyText>{formatDuration(props.currentAudio.currentTime)}</TinyText>
+            <TinyText>{formatDuration(props.currentAudio.duration)}</TinyText>
+          </div>
         </div>
         <div className={style.right__controle_containe}>
-          <VolumeControl volume={props.audioVolume} setVolume={props.setVolume} />
+          <VolumeControl volume={props.volume} setVolume={props.setVolume} />
           <CurrentPlaylist />
         </div>
       </div>
+      <audio ref={audio} src={props.currentAudio.src}></audio>
     </div>
   )
 }
 
+export default AudioControl;
 
-const mapStateToProps = (state) => {
-  return {
-    currentSongId: state.audio.songId,
-    currentAudio: state.audio.currentSong,
-    audioVolume: state.audio.volume
-  }
-}
-
-const AudioContolContainer = connect(mapStateToProps, { setNextSong, setPrevSong, setVolume }) (AudioControl)
-
-export default AudioContolContainer;
+// audio.duration NAN         
+//<audio muted={true} autoPlay ref={audio} src={audioFile}></audio>

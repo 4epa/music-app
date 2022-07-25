@@ -2,7 +2,8 @@ import './App.css';
 import Header from './component/Header/Header';
 import Sitebar from './component/Sitebar/Sitebar';
 import {Route, Routes, BrowserRouter} from '../node_modules/react-router-dom/react-router-dom.development';
-import AudioControl from './component/AudioControl/AudioControl';
+import AudioControlContainer from './component/AudioControl/AudioControlContainer';
+import PlaylistContainer from './component/Playlist/Playlist';
 
 const App = () => {
   return (
@@ -12,9 +13,11 @@ const App = () => {
           <Header />
           <Sitebar />
           <div className='content'>
-            sss
+            <Routes>
+              <Route path="/" element={<PlaylistContainer />}/>
+            </Routes>
           </div>
-          <AudioControl />
+          <AudioControlContainer />
         </div>
       </BrowserRouter>
     </div>

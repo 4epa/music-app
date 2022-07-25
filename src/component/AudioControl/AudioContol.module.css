@@ -4,17 +4,21 @@
   justify-content: space-between;
   align-items: center;
 }
+.timer_container {
+  display: flex;
+  justify-content: space-between;
+}
 .info_box {
   max-width: 200px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 .cover {
   margin-right: 20px;
   position: relative;
-  max-width: 60px;
-  padding: 30px;
+  max-width: 80px;
+  padding: 40px;
 }
 .cover img {
   border-radius: 5px;
@@ -26,11 +30,11 @@
   object-fit: cover;
 }
 .description > *:not(:last-child) {
-  margin-bottom: 3px;
+  margin-bottom: 5px;
 }
 .audio_title {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
 }
 .audio_author {

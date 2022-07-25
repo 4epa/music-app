@@ -1,98 +1,77 @@
+import { display } from '@mui/system';
+import { type } from '@testing-library/user-event/dist/type';
 import song1 from '../assets/musics/clonex_type_beat.mp3';
-import song2 from '../assets/musics/glich_core.mp3';
-import song3 from '../assets/musics/hyperpop_guitar.mp3';
 
-const SET_CURRENT_SONG = 'SET_CURRENT_SONG';
+const SET_CURRENT_AUDIO = 'SET_CURRENT_AUDIO';
+const SET_CURRENT_PLAYLIST = 'SET_CURRENT_PLAYLIST';
 const SET_NEXT_SONG = 'SET_NEXT_SONG';
 const SET_PREV_SONG = 'SET_PREV_SONG';
 const SET_VOLUME = 'SET_VOLUME';
+const SET_AUDIO_NUMBER = 'SET_AUDIO_NUMBER';
+const SET_AUDIO = 'SET_AUDIO';
+const SET_IS_PLAY = 'SET_IS_PLAY';
+const SET_CURRENT_TIME = 'SET_CURRENT_TIME';
 
-export const setVolume = (volume) => {
+export const setVolume = (value) => {
   return {
     type: SET_VOLUME,
-    volume
+    value
   }
 }
 
-export const setCurrentSong = (song) => {
+export const setCurrentTime = (time) => {
   return {
-    type: SET_CURRENT_SONG,
-    song
+    type: SET_CURRENT_TIME,
+    time
   }
 }
 
-export const setNextSong = (songId) => {
+export const setIsPlay = (status) => {
   return {
-    type: SET_NEXT_SONG,
-    songId
+    type: SET_IS_PLAY,
+    status
   }
 }
 
-export const setPrevSong = (songId) => {
+export const setCurrentAudio = (audio) => {
   return {
-    type: SET_PREV_SONG,
-    songId
+    type: SET_CURRENT_AUDIO,
+    audio
   }
 }
-
-const currentPlaylist = [
-  {
-    songId: 1,
-    title: 'Порядок',
-    author: '4epaaa',
-    audioFile: song1,
-    cover: 'https://i1.sndcdn.com/artworks-syynnzzv6bzYveme-2fPSGw-t500x500.jpg'
-  },
-  {
-    songId: 2,
-    title: 'Нормік',
-    author: '4epaaa',
-    audioFile: song2,
-    cover: 'https://stringfixer.com/files/271008910.jpg'
-  },
-  {
-    songId: 3,
-    title: 'Хайпова',
-    author: '4epaaa',
-    audioFile: song3,
-    cover: 'https://i.pinimg.com/736x/8e/a6/ff/8ea6ff2946c1c54245626d2a5032c067.jpg'
-  },
-]
 
 const initialState = {
-  songId: 0,
-  currentSong: currentPlaylist[0],
-  volume: 0.4,
+  currentAudio: null,
+  audioIsPlay: false,
+  volume: 0.2,
 }
 
-
+console.log(initialState.audioFile)
 
 const audioReducer = (state = initialState, action) => {
-  let id = action.songId
   switch (action.type) {
     case SET_VOLUME:
       return {
         ...state,
-        volume: action.volume
+        volume: action.value
       }
-    case SET_CURRENT_SONG:
+    case SET_CURRENT_TIME:
       return {
         ...state,
-        currentSong: action.song
+        currentAudio: {
+          ...state.currentAudio,
+          currentTime: action.time
+        }
       }
-    case SET_NEXT_SONG:
-      ++id
+    case SET_IS_PLAY:
       return {
         ...state,
-        songId: id,
-        currentSong: currentPlaylist[id]
+        audioIsPlay: action.status,
       }
-    case SET_PREV_SONG:
-      --id
+    case SET_CURRENT_AUDIO:
       return {
         ...state,
-        songId: id,
-        currentSong: currentPlaylist[id]
+        currentAudio: action.audio
       }
     default: 
       return state
