@@ -1,6 +1,5 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { duration, styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
@@ -18,7 +17,7 @@ import Typography from '@mui/material/Typography';
 
 
 const AudioControl = (props) => {
-  
+
   const [timer, setTimer] = useState(null);
 
   const audio = React.createRef();
@@ -71,6 +70,28 @@ const AudioControl = (props) => {
     audioFile.currentTime = value
   }
 
+  const nextOrPrevAudio = (currentPlaylit, currentAudioNumber, action) => {
+
+    switch (action) {
+      case 'prev':
+        --currentAudioNumber
+        break
+      case 'next':
+        ++currentAudioNumber
+        break
+    }
+
+    console.log(currentAudioNumber)
+
+    if (currentAudioNumber < 0 || currentAudioNumber >= currentPlaylit.length) return false
+
+    props.setAudioNumber(currentAudioNumber)
+    props.setCurrentTime(0)
+
+    return props.setCurrentAudio(currentPlaylit[currentAudioNumber])
+
+  }
+
   return (
     <div className="control_panel">
       <div className={style.control_container}>
@@ -84,7 +105,7 @@ const AudioControl = (props) => {
                 mt: 0,
               }}
             >
-              <IconButton  sx={{ padding: '5px' }} aria-label="previous song">
+              <IconButton onClick={() => nextOrPrevAudio(props.currentPlaylist, props.currentAudioNumber, 'prev')} sx={{ padding: '5px' }} aria-label="previous song">
                 <FastRewindRounded sx={{ fontSize: '25px', color: '#fff' }} />
               </IconButton>
               <IconButton sx={{ padding: '5px' }}>
@@ -94,7 +115,7 @@ const AudioControl = (props) => {
                   : <PauseRounded onClick={ () => props.setIsPlay(false) } sx={{ fontSize: '30px', color: '#fff' }}/>
                 }
               </IconButton>
-              <IconButton sx={{ padding: '5px' }} aria-label="next song">
+              <IconButton onClick={() => nextOrPrevAudio(props.currentPlaylist, props.currentAudioNumber, 'next')} sx={{ padding: '5px' }} aria-label="next song">
                 <FastForwardRounded sx={{ fontSize: '25px', color: '#fff' }}  />
               </IconButton>
           </Box>
@@ -141,7 +162,7 @@ const AudioControl = (props) => {
           <CurrentPlaylist />
         </div>
       </div>
-      <audio ref={audio} src={props.currentAudio.src}></audio>
+      <audio autoPlay={true} ref={audio} src={props.currentAudio.src}></audio>
     </div>
   )
 }

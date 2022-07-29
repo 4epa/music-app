@@ -1,17 +1,22 @@
 .control_container {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+  grid-template-columns: 1fr 1fr 1fr;
+  display: grid;
   align-items: center;
+}
+.audio_control {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 .timer_container {
   display: flex;
   justify-content: space-between;
+  width: 98%;
 }
 .info_box {
   max-width: 200px;
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
 }
 .cover {
@@ -46,6 +51,7 @@
   text-decoration: underline;
 }
 .right__controle_containe {
+  justify-content: end;
   display: flex;
 }
 .playlist_icon {

@@ -1,10 +1,22 @@
 import { connect } from "react-redux/es/exports";
 import SongBox from "./SongBox/SongBox";
-import { setCurrentAudio, setCurrentPlaylist, setAudioNumber, setIsPlay } from "../../redux/audioReducer";
+import { setCurrentAudio, setAudioNumber, setIsPlay } from "../../redux/audioReducer";
+import { setCurrentPlaylist } from "../../redux/currentPlaylistReducer";
 
 
 const Playlist = (props) => {
-  const songs = props.playlist.map(song => <SongBox key={song.songId} audioIsPlay={props.audioIsPlay} currentAudio={props.currentAudio} setIsPlay={props.setIsPlay} setCurrentAudio={props.setCurrentAudio} song={song} playlist={props.playlist}/>)
+  const songs = props.playlist
+    .map(song => <SongBox  
+      setAudioNumber={props.setAudioNumber} 
+      key={song.songId} 
+      audioIsPlay={props.audioIsPlay} 
+      currentAudio={props.currentAudio} 
+      setIsPlay={props.setIsPlay} 
+      setCurrentAudio={props.setCurrentAudio} 
+      song={song} 
+      playlist={props.playlist}
+      setCurrentPlaylist={props.setCurrentPlaylist}
+    />)
 
   return <div>{songs}</div>
 }
@@ -17,6 +29,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const PlaylistContainer = connect( mapStateToProps, { setCurrentAudio, setIsPlay } ) (Playlist)
+const PlaylistContainer = connect( mapStateToProps, { setCurrentAudio, setIsPlay, setAudioNumber, setCurrentPlaylist } ) (Playlist)
 
 export default PlaylistContainer;

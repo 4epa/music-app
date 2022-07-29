@@ -1,16 +1,15 @@
-import { display } from '@mui/system';
-import { type } from '@testing-library/user-event/dist/type';
-import song1 from '../assets/musics/clonex_type_beat.mp3';
-
 const SET_CURRENT_AUDIO = 'SET_CURRENT_AUDIO';
-const SET_CURRENT_PLAYLIST = 'SET_CURRENT_PLAYLIST';
-const SET_NEXT_SONG = 'SET_NEXT_SONG';
-const SET_PREV_SONG = 'SET_PREV_SONG';
 const SET_VOLUME = 'SET_VOLUME';
 const SET_AUDIO_NUMBER = 'SET_AUDIO_NUMBER';
-const SET_AUDIO = 'SET_AUDIO';
 const SET_IS_PLAY = 'SET_IS_PLAY';
 const SET_CURRENT_TIME = 'SET_CURRENT_TIME';
+
+export const setAudioNumber = (number) => {
+  return {
+    type: SET_AUDIO_NUMBER,
+    number
+  }
+}
 
 export const setVolume = (value) => {
   return {
@@ -44,9 +43,8 @@ const initialState = {
   currentAudio: null,
   audioIsPlay: false,
   volume: 0.2,
+  audioNumberInPlaylist: null,
 }
-
-console.log(initialState.audioFile)
 
 const audioReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -54,6 +52,11 @@ const audioReducer = (state = initialState, action) => {
       return {
         ...state,
         volume: action.value
+      }
+    case SET_AUDIO_NUMBER:
+      return {
+        ...state,
+        audioNumberInPlaylist: action.number
       }
     case SET_CURRENT_TIME:
       return {

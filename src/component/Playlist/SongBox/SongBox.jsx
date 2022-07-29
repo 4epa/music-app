@@ -3,7 +3,7 @@ import PauseIcon from '@mui/icons-material/Pause';
 import style from '../Playlist.module.css';
 import { useEffect, useState } from 'react';
 
-const SongBox = ({song, playlist, setCurrentAudio, setIsPlay, currentAudio, audioIsPlay}) => {
+const SongBox = ({song, playlist, setCurrentAudio, setIsPlay, currentAudio, audioIsPlay, setAudioNumber, setCurrentPlaylist}) => {
 
   const [selectAudio, setSelectAudio] = useState({})
 
@@ -23,6 +23,8 @@ const SongBox = ({song, playlist, setCurrentAudio, setIsPlay, currentAudio, audi
     })
   }
 
+  const audioNumber = checkCurentAudioNumber();
+
   function formatDuration(value) {
     const time = Math.ceil(value);
     const minute = Math.floor(time / 60);
@@ -31,8 +33,10 @@ const SongBox = ({song, playlist, setCurrentAudio, setIsPlay, currentAudio, audi
   }
 
   const setAudio = () => {
-    setIsPlay(false)
+    setCurrentPlaylist(playlist)
+    setAudioNumber(audioNumber)
     setCurrentAudio(song)
+    setIsPlay(true)
   }
 
   const controlButtons = () => {
@@ -45,7 +49,7 @@ const SongBox = ({song, playlist, setCurrentAudio, setIsPlay, currentAudio, audi
     <div className={selected() ? style.song_container_selected : style.song_container }>
       <div onClick={ setAudio } className={style.bg_songBox}></div>
       {
-        selected() ? controlButtons() : <span className={style.song_number}>{checkCurentAudioNumber() + 1}</span>
+        selected() ? controlButtons() : <span className={style.song_number}>{audioNumber + 1}</span>
       }
       <div className={style.cover}>
         <img src={song.cover} alt="" />
