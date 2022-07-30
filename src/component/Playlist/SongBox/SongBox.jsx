@@ -1,27 +1,35 @@
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
-import style from '../Playlist.module.css';
-import { useEffect, useState } from 'react';
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
+import style from "../Playlist.module.css";
+import { useEffect, useState } from "react";
 
-const SongBox = ({song, playlist, setCurrentAudio, setIsPlay, currentAudio, audioIsPlay, setAudioNumber, setCurrentPlaylist}) => {
-
-  const [selectAudio, setSelectAudio] = useState({})
+const SongBox = ({
+  song,
+  playlist,
+  setCurrentAudio,
+  setIsPlay,
+  currentAudio,
+  audioIsPlay,
+  setAudioNumber,
+  setCurrentPlaylist,
+}) => {
+  const [selectAudio, setSelectAudio] = useState({});
 
   useEffect(() => {
-    setSelectAudio(currentAudio)
-  }, [currentAudio])
+    setSelectAudio(currentAudio);
+  }, [currentAudio]);
 
   const selected = () => {
-    if (selectAudio === null) return false
-    else if (selectAudio.songId === song.songId) return true
-    return false
-  }
+    if (selectAudio === null) return false;
+    else if (selectAudio.songId === song.songId) return true;
+    return false;
+  };
 
   const checkCurentAudioNumber = () => {
     return playlist.findIndex((element, index) => {
-      if (element.songId === song.songId) return true
-    })
-  }
+      if (element.songId === song.songId) return true;
+    });
+  };
 
   const audioNumber = checkCurentAudioNumber();
 
@@ -33,24 +41,38 @@ const SongBox = ({song, playlist, setCurrentAudio, setIsPlay, currentAudio, audi
   }
 
   const setAudio = () => {
-    setCurrentPlaylist(playlist)
-    setAudioNumber(audioNumber)
-    setCurrentAudio(song)
-    setIsPlay(true)
-  }
+    setCurrentPlaylist(playlist);
+    setAudioNumber(audioNumber);
+    setCurrentAudio(song);
+    setIsPlay(true);
+  };
 
   const controlButtons = () => {
-    return audioIsPlay
-      ? <PauseIcon onClick={ () => setIsPlay(false) } sx={{zIndex: 10, fontSize: '25px', cursor: 'pointer'}} />
-      : <PlayArrowIcon onClick={ () => setIsPlay(true) } sx={{zIndex: 10, fontSize: '25px', cursor: 'pointer'}} />
-  }
+    return audioIsPlay ? (
+      <PauseIcon
+        onClick={() => setIsPlay(false)}
+        sx={{ zIndex: 10, fontSize: "25px", cursor: "pointer" }}
+      />
+    ) : (
+      <PlayArrowIcon
+        onClick={() => setIsPlay(true)}
+        sx={{ zIndex: 10, fontSize: "25px", cursor: "pointer" }}
+      />
+    );
+  };
 
   return (
-    <div className={selected() ? style.song_container_selected : style.song_container }>
-      <div onClick={ setAudio } className={style.bg_songBox}></div>
-      {
-        selected() ? controlButtons() : <span className={style.song_number}>{audioNumber + 1}</span>
+    <div
+      className={
+        selected() ? style.song_container_selected : style.song_container
       }
+    >
+      <div onClick={setAudio} className={style.bg_songBox}></div>
+      {selected() ? (
+        controlButtons()
+      ) : (
+        <span className={style.song_number}>{audioNumber + 1}</span>
+      )}
       <div className={style.cover}>
         <img src={song.cover} alt="" />
       </div>
@@ -58,7 +80,7 @@ const SongBox = ({song, playlist, setCurrentAudio, setIsPlay, currentAudio, audi
       <span className={style.song_author}>{song.author}</span>
       <span className={style.song_time}>{formatDuration(song.duration)}</span>
     </div>
-  )
-}
+  );
+};
 
 export default SongBox;

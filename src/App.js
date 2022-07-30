@@ -3,7 +3,8 @@ import Header from './component/Header/Header';
 import Sitebar from './component/Sitebar/Sitebar';
 import {Route, Routes, BrowserRouter} from '../node_modules/react-router-dom/react-router-dom.development';
 import AudioControlContainer from './component/AudioControl/AudioControlContainer';
-import PlaylistContainer from './component/Playlist/Playlist';
+import Playlist from './component/Playlist/Playlist';
+import Playlists from './component/Playlists/Playlists';
 
 const App = () => {
   return (
@@ -14,7 +15,8 @@ const App = () => {
           <Sitebar />
           <div className='content'>
             <Routes>
-              <Route path="/" element={<PlaylistContainer />}/>
+              <Route path="/playlist/1" element={<Playlist />} />
+              <Route path="/" element={<Playlists />}/>
             </Routes>
           </div>
           <AudioControlContainer />
