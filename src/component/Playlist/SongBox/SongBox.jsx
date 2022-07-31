@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 const SongBox = ({
   song,
-  playlist,
+  songs,
   setCurrentAudio,
   setIsPlay,
   currentAudio,
@@ -26,7 +26,7 @@ const SongBox = ({
   };
 
   const checkCurentAudioNumber = () => {
-    return playlist.findIndex((element, index) => {
+    return songs.findIndex((element, index) => {
       if (element.songId === song.songId) return true;
     });
   };
@@ -41,7 +41,7 @@ const SongBox = ({
   }
 
   const setAudio = () => {
-    setCurrentPlaylist(playlist);
+    setCurrentPlaylist(songs);
     setAudioNumber(audioNumber);
     setCurrentAudio(song);
     setIsPlay(true);

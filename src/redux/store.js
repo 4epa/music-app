@@ -1,12 +1,14 @@
 import { combineReducers, legacy_createStore as createStore, applyMiddleware } from "redux";
 import audioReducer from './audioReducer';
-import playlistReducer from './playListReducer';
+import playlistsReducer from './playListsReducer';
 import thunkMiddleware from 'redux-thunk'
-import currentPlaylistReducer from "./currentPlaylistReducer";
+import currentPlaylistReducer from './currentPlaylistReducer';
+import playListReducer from './playListReducer';
 
 let reducers = combineReducers({
   audio: audioReducer,
-  playlist: playlistReducer,
+  playlists: playlistsReducer,
+  playlist: playListReducer,
   currentPlaylist: currentPlaylistReducer
 })
 
