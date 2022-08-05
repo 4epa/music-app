@@ -16,7 +16,7 @@ const App = () => {
           <div className='content'>
             <Routes>
               <Route path="/playlist/:id" element={<Playlist />} />
-              <Route path="/" element={<Playlists />}/>
+              <Route path="" element={<Playlists />}/>
             </Routes>
           </div>
           <AudioControlContainer />
