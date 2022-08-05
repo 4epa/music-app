@@ -21,7 +21,7 @@ const mapStateToProps = (state) => {
     currentAudio: state.audio.currentAudio,
     volume: state.audio.volume,
     currentAudioNumber: state.audio.audioNumberInPlaylist,
-    currentPlaylist: state.currentPlaylist.currentPlaylist
+    currentPlaylist: state.currentPlaylist.currentPlaylist,
   }
 }
 

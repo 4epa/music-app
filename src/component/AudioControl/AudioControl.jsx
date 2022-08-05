@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { duration, styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import IconButton from "@mui/material/IconButton";
@@ -14,24 +14,28 @@ import CurrentPlaylist from "./CurrentPlaylist/CurrentPlaylist";
 import VolumeControl from "./VolumeControl/VolumeControl";
 import Typography from "@mui/material/Typography";
 
+const TinyText = styled(Typography)({
+  color: "#fff",
+  fontSize: "14px",
+  opacity: 0.6,
+  fontWeight: 500,
+  letterSpacing: 0.2,
+});
+
 const AudioControl = (props) => {
+
   const [timer, setTimer] = useState(null);
+  const [audioIsEnded, setAudioIsEndet] = useState(false)
 
   const audio = React.createRef();
 
-  const checkTime = (curentTime, duration, audio) => {
-    if (curentTime >= duration) {
+  const checkTime = (audio) => {
+    if (audio.ended) {
       props.setIsPlay(false);
+      setAudioIsEndet(audio.ended)
       return props.setCurrentTime(0);
     }
-    return props.setCurrentTime(curentTime);
-  };
-
-  const audioPlay = (audio) => {
-    audio.play();
-    setTimer(
-      setInterval(() => checkTime(audio.currentTime, audio.duration), 1000)
-    );
+    return props.setCurrentTime(audio.currentTime);
   };
 
   const audioStop = (audio) => {
@@ -39,35 +43,26 @@ const AudioControl = (props) => {
     setTimer(clearInterval(timer));
   };
 
+  const audioPlay = (audio) => {
+    audio.play();
+    setTimer(
+      setInterval(() => checkTime(audio), 1000)
+    );
+  };
+
   useEffect(() => {
-    if (props.audioIsPlay) audioPlay(audio.current);
-    else audioStop(audio.current);
+    (props.audioIsPlay) 
+    ? audioPlay(audio.current)
+    : audioStop(audio.current)
   }, [props.audioIsPlay]);
 
   useEffect(() => {
     audio.current.volume = props.volume;
   }, [props.volume]);
 
-  const TinyText = styled(Typography)({
-    color: "#fff",
-    fontSize: "14px",
-    opacity: 0.6,
-    fontWeight: 500,
-    letterSpacing: 0.2,
-  });
-
-  function formatDuration(value) {
-    const time = Math.ceil(value);
-    const minute = Math.floor(time / 60);
-    const secondLeft = time - minute * 60;
-    return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
-  }
-
-  const handleChange = (event, value) => {
-    let audioFile = audio.current;
-    props.setCurrentTime(value);
-    audioFile.currentTime = value;
-  };
+  useEffect(() => {
+    if (audioIsEnded) nextOrPrevAudio(props.currentPlaylist, props.currentAudioNumber, "next")
+  }, [audioIsEnded])
 
   const nextOrPrevAudio = (currentPlaylit, currentAudioNumber, action) => {
     switch (action) {
@@ -80,13 +75,27 @@ const AudioControl = (props) => {
     }
 
     if (currentAudioNumber < 0 || currentAudioNumber >= currentPlaylit.length)
-      return false;
+      return setAudioIsEndet(false);;
 
     props.setAudioNumber(currentAudioNumber);
     props.setCurrentTime(0);
-    props.setIsPlay(true)
+    props.setIsPlay(true);
+    setAudioIsEndet(false);
 
     return props.setCurrentAudio(currentPlaylit[currentAudioNumber]);
+  };
+
+  function formatDuration(value) {
+    const time = Math.ceil(value);
+    const minute = Math.floor(time / 60);
+    const secondLeft = time - minute * 60;
+    return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
+  }
+
+  const handleChange = (event, value) => {
+    let audioFile = audio.current;
+    props.setCurrentTime(value);
+    audioFile.currentTime = value;
   };
 
   return (
@@ -107,13 +116,11 @@ const AudioControl = (props) => {
             }}
           >
             <IconButton
-              onClick={() =>
-                nextOrPrevAudio(
-                  props.currentPlaylist,
-                  props.currentAudioNumber,
-                  "prev"
-                )
-              }
+              onClick={() => nextOrPrevAudio(
+                props.currentPlaylist,
+                props.currentAudioNumber,
+                "prev"
+              )}
               sx={{ padding: "5px" }}
               aria-label="previous song"
             >
@@ -135,13 +142,11 @@ const AudioControl = (props) => {
               </IconButton>
             )}
             <IconButton
-              onClick={() =>
-                nextOrPrevAudio(
-                  props.currentPlaylist,
-                  props.currentAudioNumber,
-                  "next"
-                )
-              }
+              onClick={() => nextOrPrevAudio(
+                props.currentPlaylist,
+                props.currentAudioNumber,
+                "next"
+              )}
               sx={{ padding: "5px" }}
               aria-label="next song"
             >
@@ -158,21 +163,23 @@ const AudioControl = (props) => {
               step={1}
               max={props.currentAudio.duration}
               sx={{
-                padding: "5px 0px",
+                padding: "0px 0px",
                 color: "#fff",
                 height: 4,
                 "& .MuiSlider-thumb": {
-                  width: 8,
-                  height: 8,
+                  width: 4,
+                  height: 4,
                   "&:before": {
                     boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
                   },
                   "&:hover, &.Mui-focusVisible": {
-                    boxShadow: `0px 0px 0px 8px ${"rgb(255 255 255 / 16%)"}`,
+                    boxShadow: `0px 0px 0px 0px ${"rgb(255 255 255 / 16%)"}`,
+                    width: 6,
+                    height: 6,
                   },
                   "&.Mui-active": {
-                    width: 20,
-                    height: 20,
+                    width: 10,
+                    height: 10,
                   },
                 },
                 "& .MuiSlider-rail": {

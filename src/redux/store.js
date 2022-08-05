@@ -4,12 +4,14 @@ import playlistsReducer from './playListsReducer';
 import thunkMiddleware from 'redux-thunk'
 import currentPlaylistReducer from './currentPlaylistReducer';
 import playListReducer from './playListReducer';
+import authReducer from "./authReducer";
 
 let reducers = combineReducers({
   audio: audioReducer,
   playlists: playlistsReducer,
   playlist: playListReducer,
-  currentPlaylist: currentPlaylistReducer
+  currentPlaylist: currentPlaylistReducer,
+  authorization: authReducer
 })
 
 const store = createStore(reducers, applyMiddleware(thunkMiddleware))

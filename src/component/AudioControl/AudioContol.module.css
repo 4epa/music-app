@@ -15,7 +15,7 @@
   width: 98%;
 }
 .info_box {
-  max-width: 200px;
+  max-width: 300px;
   display: flex;
   align-items: flex-start;
 }

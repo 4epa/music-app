@@ -1,3 +1,6 @@
+.playlist_container {
+  padding-bottom: 200px;
+}
 .playlist_header {
   display: flex;
   align-items: flex-end;

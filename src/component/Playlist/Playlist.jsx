@@ -2,6 +2,7 @@ import { connect } from "react-redux/es/exports";
 import SongBox from "./SongBox/SongBox";
 import {
   setCurrentAudio,
+  setCurrentAudioFile,
   setAudioNumber,
   setIsPlay,
 } from "../../redux/audioReducer";
@@ -13,6 +14,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const Playlist = (props) => {
+  
   const songs = props.playlist.songs.map((song) => (
     <SongBox
       setAudioNumber={props.setAudioNumber}
@@ -28,7 +30,7 @@ const Playlist = (props) => {
   ));
 
   return (
-    <div>
+    <div className={style.playlist_container}>
       <div className={style.playlist_header}>
         <div className={style.playlist_cover}>
           <img src={props.playlist.playlistCover} alt="#" />
