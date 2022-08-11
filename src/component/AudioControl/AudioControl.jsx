@@ -13,6 +13,8 @@ import AudioInfo from "./AudioInfo/AudioInfo";
 import CurrentPlaylist from "./CurrentPlaylist/CurrentPlaylist";
 import VolumeControl from "./VolumeControl/VolumeControl";
 import Typography from "@mui/material/Typography";
+import { useDispatch, useSelector } from "react-redux";
+import { setAudioNumber, setCurrentAudio, setVolume, setIsPlay, setCurrentTime } from '../../redux/audioReducer';
 
 const TinyText = styled(Typography)({
   color: "#fff",
@@ -22,7 +24,14 @@ const TinyText = styled(Typography)({
   letterSpacing: 0.2,
 });
 
-const AudioControl = (props) => {
+const AudioControl = ({currentAudio}) => {
+  const audioIsPlay = useSelector(state => state.audio.audioIsPlay);
+  const currentAudioNumber = useSelector(state => state.audio.audioNumberInPlaylist);
+  const volume = useSelector(state => state.audio.volume);
+  const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist);
+
+  const dispatch = useDispatch()
+
 
   const [timer, setTimer] = useState(null);
   const [audioIsEnded, setAudioIsEndet] = useState(false)
@@ -31,11 +40,11 @@ const AudioControl = (props) => {
 
   const checkTime = (audio) => {
     if (audio.ended) {
-      props.setIsPlay(false);
+      dispatch(setIsPlay(false));
       setAudioIsEndet(audio.ended)
-      return props.setCurrentTime(0);
+      return dispatch(setCurrentTime(0));
     }
-    return props.setCurrentTime(audio.currentTime);
+    return dispatch(setCurrentTime(audio.currentTime));
   };
 
   const audioStop = (audio) => {
@@ -51,17 +60,17 @@ const AudioControl = (props) => {
   };
 
   useEffect(() => {
-    (props.audioIsPlay) 
+    (audioIsPlay) 
     ? audioPlay(audio.current)
     : audioStop(audio.current)
-  }, [props.audioIsPlay]);
+  }, [audioIsPlay]);
 
   useEffect(() => {
-    audio.current.volume = props.volume;
-  }, [props.volume]);
+    audio.current.volume = volume;
+  }, [volume]);
 
   useEffect(() => {
-    if (audioIsEnded) nextOrPrevAudio(props.currentPlaylist, props.currentAudioNumber, "next")
+    if (audioIsEnded) nextOrPrevAudio(currentPlaylist, currentAudioNumber, "next")
   }, [audioIsEnded])
 
   const nextOrPrevAudio = (currentPlaylit, currentAudioNumber, action) => {
@@ -77,12 +86,12 @@ const AudioControl = (props) => {
     if (currentAudioNumber < 0 || currentAudioNumber >= currentPlaylit.length)
       return setAudioIsEndet(false);;
 
-    props.setAudioNumber(currentAudioNumber);
-    props.setCurrentTime(0);
-    props.setIsPlay(true);
+      dispatch(setAudioNumber(currentAudioNumber));
+      dispatch(setCurrentTime(0));
+      dispatch(setIsPlay(true));
     setAudioIsEndet(false);
 
-    return props.setCurrentAudio(currentPlaylit[currentAudioNumber]);
+    return dispatch(setCurrentAudio(currentPlaylit[currentAudioNumber]));
   };
 
   function formatDuration(value) {
@@ -94,7 +103,7 @@ const AudioControl = (props) => {
 
   const handleChange = (event, value) => {
     let audioFile = audio.current;
-    props.setCurrentTime(value);
+    dispatch(setCurrentTime(value));
     audioFile.currentTime = value;
   };
 
@@ -102,9 +111,9 @@ const AudioControl = (props) => {
     <div className="control_panel">
       <div className={style.control_container}>
         <AudioInfo
-          cover={props.currentAudio.cover}
-          title={props.currentAudio.title}
-          author={props.currentAudio.author}
+          cover={currentAudio.cover}
+          title={currentAudio.title}
+          author={currentAudio.author}
         />
         <div className={style.audio_control}>
           <Box
@@ -117,8 +126,8 @@ const AudioControl = (props) => {
           >
             <IconButton
               onClick={() => nextOrPrevAudio(
-                props.currentPlaylist,
-                props.currentAudioNumber,
+                currentPlaylist,
+                currentAudioNumber,
                 "prev"
               )}
               sx={{ padding: "5px" }}
@@ -126,16 +135,16 @@ const AudioControl = (props) => {
             >
               <FastRewindRounded sx={{ fontSize: "25px", color: "#fff" }} />
             </IconButton>
-            {!props.audioIsPlay ? (
+            {!audioIsPlay ? (
               <IconButton
-                onClick={() => props.setIsPlay(true)}
+                onClick={() => dispatch(setIsPlay(true))}
                 sx={{ padding: "5px" }}
               >
                 <PlayArrowRounded sx={{ fontSize: "30px", color: "#fff" }} />
               </IconButton>
             ) : (
               <IconButton
-                onClick={() => props.setIsPlay(false)}
+                onClick={() => dispatch(setIsPlay(false))}
                 sx={{ padding: "5px" }}
               >
                 <PauseRounded sx={{ fontSize: "30px", color: "#fff" }} />
@@ -143,8 +152,8 @@ const AudioControl = (props) => {
             )}
             <IconButton
               onClick={() => nextOrPrevAudio(
-                props.currentPlaylist,
-                props.currentAudioNumber,
+                currentPlaylist,
+                currentAudioNumber,
                 "next"
               )}
               sx={{ padding: "5px" }}
@@ -158,10 +167,10 @@ const AudioControl = (props) => {
               onChange={handleChange}
               aria-label="time-indicator"
               size="small"
-              value={props.currentAudio.currentTime}
+              value={currentAudio.currentTime}
               min={0}
               step={1}
-              max={props.currentAudio.duration}
+              max={currentAudio.duration}
               sx={{
                 padding: "0px 0px",
                 color: "#fff",
@@ -190,17 +199,17 @@ const AudioControl = (props) => {
           </Box>
           <div className={style.timer_container}>
             <TinyText>
-              {formatDuration(props.currentAudio.currentTime)}
+              {formatDuration(currentAudio.currentTime)}
             </TinyText>
-            <TinyText>{formatDuration(props.currentAudio.duration)}</TinyText>
+            <TinyText>{formatDuration(currentAudio.duration)}</TinyText>
           </div>
         </div>
         <div className={style.right__controle_containe}>
-          <VolumeControl volume={props.volume} setVolume={props.setVolume} />
+          <VolumeControl volume={volume} setVolume={setVolume} />
           <CurrentPlaylist />
         </div>
       </div>
-      <audio autoPlay={true} ref={audio} src={props.currentAudio.src}></audio>
+      <audio autoPlay={true} ref={audio} src={currentAudio.src}></audio>
     </div>
   );
 };

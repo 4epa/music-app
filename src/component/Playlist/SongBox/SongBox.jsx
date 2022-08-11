@@ -2,18 +2,18 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import style from "../Playlist.module.css";
 import { useEffect, useState } from "react";
-
-const SongBox = ({
-  song,
-  songs,
+import {
   setCurrentAudio,
-  setIsPlay,
-  currentAudio,
-  audioIsPlay,
   setAudioNumber,
-  setCurrentPlaylist,
-}) => {
+  setIsPlay,
+} from "../../../redux/audioReducer";
+import { useDispatch } from "react-redux";
+import { setCurrentPlaylist } from "../../../redux/currentPlaylistReducer";
+
+const SongBox = ({ song, songs, currentAudio, audioIsPlay }) => {
   const [selectAudio, setSelectAudio] = useState({});
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setSelectAudio(currentAudio);
@@ -41,21 +41,21 @@ const SongBox = ({
   }
 
   const setAudio = () => {
-    setCurrentPlaylist(songs);
-    setAudioNumber(audioNumber);
-    setCurrentAudio(song);
-    setIsPlay(true);
+    dispatch(setCurrentPlaylist(songs));
+    dispatch(setAudioNumber(audioNumber));
+    dispatch(setCurrentAudio(song));
+    dispatch(setIsPlay(true));
   };
 
   const controlButtons = () => {
     return audioIsPlay ? (
       <PauseIcon
-        onClick={() => setIsPlay(false)}
+        onClick={() => dispatch(setIsPlay(false))}
         sx={{ zIndex: 10, fontSize: "25px", cursor: "pointer" }}
       />
     ) : (
       <PlayArrowIcon
-        onClick={() => setIsPlay(true)}
+        onClick={() => dispatch(setIsPlay(true))}
         sx={{ zIndex: 10, fontSize: "25px", cursor: "pointer" }}
       />
     );

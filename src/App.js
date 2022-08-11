@@ -4,7 +4,7 @@ import Sitebar from './component/Sitebar/Sitebar';
 import { Route, Routes, BrowserRouter} from '../node_modules/react-router-dom/react-router-dom.development';
 import AudioControlContainer from './component/AudioControl/AudioControlContainer';
 import Playlist from './component/Playlist/Playlist';
-import Playlists from './component/Playlists/Playlists';
+import HomePage from './component/HomePage/HomePage';
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
           <div className='content'>
             <Routes>
               <Route path="/playlist/:id" element={<Playlist />} />
-              <Route path="" element={<Playlists />}/>
+              <Route path="" element={<HomePage />}/>
             </Routes>
           </div>
           <AudioControlContainer />

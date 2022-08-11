@@ -38,9 +38,6 @@
   font-weight: 700;
   display: block;
 }
-.card_title:hover {
-  text-decoration: underline;
-}
 .card_artists {
   color: rgba(255, 255, 255, 0.445);
   font-size: 14px;

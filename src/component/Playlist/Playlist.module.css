@@ -96,6 +96,12 @@
 .song_author {
   padding-right: 30px;
   text-align: end;
+  cursor: pointer;
+  z-index: 10;
+}
+.song_author:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 .song_container:hover {
   background-color: rgb(65, 44, 44);

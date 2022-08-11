@@ -1,11 +1,13 @@
 import style from "./Playlists.module.css";
 import * as React from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import PlaylistBox from "./PlaylistBox/PlaylistBox";
 
-const Playlists = (props) => {
+const Playlists = () => {
 
-  const playlists = props.playlists.map(plalist => {
+  const playlistsWithState = useSelector(state => state.playlists)
+
+  const playlists = playlistsWithState.map(plalist => {
     return <PlaylistBox
       key={plalist.playlistId}
       playlistCover={plalist.playlistCover}
@@ -22,12 +24,4 @@ const Playlists = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    playlists: state.playlists
-  };
-};
-
-const PlaylistsContainer = connect(mapStateToProps, {})(Playlists);
-
-export default PlaylistsContainer;
+export default Playlists;
