@@ -66,9 +66,22 @@
 }
 .volume_icon {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.MuiSvgIcon-root {
+  position: relative;
+}
+.MuiSvgIcon-root path {
+  position: absolute;
+  left: 0px;
 }
 .volume_control {
-  display: flex;
+  position: relative;
+  display: grid;
+  grid-template-columns: 35px 4fr;
+  justify-content: start;
   align-items: center;
 }
 .volume_control > *:not(:last-child) {

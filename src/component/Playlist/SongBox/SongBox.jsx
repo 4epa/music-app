@@ -9,6 +9,7 @@ import {
 } from "../../../redux/audioReducer";
 import { useDispatch } from "react-redux";
 import { setCurrentPlaylist } from "../../../redux/currentPlaylistReducer";
+import { NavLink } from "react-router-dom";
 
 const SongBox = ({ song, songs, currentAudio, audioIsPlay }) => {
   const [selectAudio, setSelectAudio] = useState({});
@@ -77,7 +78,8 @@ const SongBox = ({ song, songs, currentAudio, audioIsPlay }) => {
         <img src={song.cover} alt="" />
       </div>
       <h3 className={style.song_title}>{song.title}</h3>
-      <span className={style.song_author}>{song.author}</span>
+      <span className={style.song_author}>
+        <NavLink className={style.author_link} to="/artis/1">{song.author}</NavLink></span>
       <span className={style.song_time}>{formatDuration(song.duration)}</span>
     </div>
   );

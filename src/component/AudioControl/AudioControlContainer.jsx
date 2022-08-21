@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { connect, useSelector } from 'react-redux/es/exports';
-import { setAudioNumber, setCurrentAudio, setVolume, setIsPlay, setCurrentTime } from '../../redux/audioReducer';
+import { useSelector } from 'react-redux/es/exports';
 import AudioControl from './AudioControl';
+import { getCurrentAudio } from '../../redux/selectors/audioSelectors';
 
-const AudioContainer = (props) => {
+const AudioControlContainer = (props) => {
 
-  const currentAudio = useSelector(state => state.audio.currentAudio)
+  const currentAudio = useSelector(state => getCurrentAudio(state));
 
   return ( 
     <div>
@@ -17,17 +17,6 @@ const AudioContainer = (props) => {
     </div>
   )
 }
-
-const mapStateToProps = (state) => {
-  return {
-    audioIsPlay: state.audio.audioIsPlay,
-    volume: state.audio.volume,
-    currentAudioNumber: state.audio.audioNumberInPlaylist,
-    currentPlaylist: state.currentPlaylist.currentPlaylist,
-  }
-}
-
-const AudioControlContainer = connect(mapStateToProps, { setAudioNumber, setIsPlay, setCurrentTime, setVolume, setCurrentAudio }) (AudioContainer)
 
 export default AudioControlContainer;
 

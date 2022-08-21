@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
@@ -14,7 +13,30 @@ import CurrentPlaylist from "./CurrentPlaylist/CurrentPlaylist";
 import VolumeControl from "./VolumeControl/VolumeControl";
 import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
-import { setAudioNumber, setCurrentAudio, setVolume, setIsPlay, setCurrentTime } from '../../redux/audioReducer';
+import {
+  setAudioNumber,
+  setCurrentAudio,
+  setVolume,
+  setIsPlay,
+  setCurrentTime,
+  setAudioIsEnd,
+  setRewindTime,
+} from "../../redux/audioReducer";
+import Audio from "../Audio/Audio";
+import { useEffect } from "react";
+import ShuffleIcon from "@mui/icons-material/Shuffle";
+import RepeatIcon from "@mui/icons-material/Repeat";
+import { useState } from "react";
+import RepeatOneIcon from "@mui/icons-material/RepeatOne";
+import { formatDuration, random } from "../../utils/helpers";
+import {
+  getAudioIsPlay,
+  getAudioIsEnd,
+  getCurrentAudioNumber,
+  getVolume,
+  getCurrentPlaylist,
+  getRewindTime,
+} from "../../redux/selectors/audioSelectors";
 
 const TinyText = styled(Typography)({
   color: "#fff",
@@ -24,87 +46,114 @@ const TinyText = styled(Typography)({
   letterSpacing: 0.2,
 });
 
-const AudioControl = ({currentAudio}) => {
-  const audioIsPlay = useSelector(state => state.audio.audioIsPlay);
-  const currentAudioNumber = useSelector(state => state.audio.audioNumberInPlaylist);
-  const volume = useSelector(state => state.audio.volume);
-  const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist);
-
-  const dispatch = useDispatch()
-
-
-  const [timer, setTimer] = useState(null);
-  const [audioIsEnded, setAudioIsEndet] = useState(false)
-
-  const audio = React.createRef();
-
-  const checkTime = (audio) => {
-    if (audio.ended) {
-      dispatch(setIsPlay(false));
-      setAudioIsEndet(audio.ended)
-      return dispatch(setCurrentTime(0));
-    }
-    return dispatch(setCurrentTime(audio.currentTime));
-  };
-
-  const audioStop = (audio) => {
-    audio.pause();
-    setTimer(clearInterval(timer));
-  };
-
-  const audioPlay = (audio) => {
-    audio.play();
-    setTimer(
-      setInterval(() => checkTime(audio), 1000)
-    );
-  };
-
-  useEffect(() => {
-    (audioIsPlay) 
-    ? audioPlay(audio.current)
-    : audioStop(audio.current)
-  }, [audioIsPlay]);
-
-  useEffect(() => {
-    audio.current.volume = volume;
-  }, [volume]);
-
-  useEffect(() => {
-    if (audioIsEnded) nextOrPrevAudio(currentPlaylist, currentAudioNumber, "next")
-  }, [audioIsEnded])
-
-  const nextOrPrevAudio = (currentPlaylit, currentAudioNumber, action) => {
-    switch (action) {
-      case "prev":
-        --currentAudioNumber;
-        break;
-      case "next":
-        ++currentAudioNumber;
-        break;
-    }
-
-    if (currentAudioNumber < 0 || currentAudioNumber >= currentPlaylit.length)
-      return setAudioIsEndet(false);;
-
-      dispatch(setAudioNumber(currentAudioNumber));
-      dispatch(setCurrentTime(0));
-      dispatch(setIsPlay(true));
-    setAudioIsEndet(false);
-
-    return dispatch(setCurrentAudio(currentPlaylit[currentAudioNumber]));
-  };
-
-  function formatDuration(value) {
-    const time = Math.ceil(value);
-    const minute = Math.floor(time / 60);
-    const secondLeft = time - minute * 60;
-    return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
+const nextOrPrevAudio = (audioNumber, action) => {
+  switch (action) {
+    case "prev":
+      --audioNumber;
+      break;
+    case "next":
+      ++audioNumber;
+      break;
   }
+  return audioNumber;
+};
+
+const RepeatButtonIcon = (loop, repeat) => {
+  if (loop) {
+    return (
+      <RepeatOneIcon sx={{ color: "#fff", fontSize: "18px", opacity: "0.5" }} />
+    );
+  } else if (repeat) {
+    return (
+      <RepeatIcon sx={{ color: "#fff", fontSize: "18px", opacity: "0.5" }} />
+    );
+  }
+  return <RepeatIcon sx={{ color: "#fff", fontSize: "18px" }} />;
+};
+
+const AudioControl = ({ currentAudio }) => {
+  const audioIsPlay = useSelector((state) => getAudioIsPlay(state));
+  const audioIsEnd = useSelector((state) => getAudioIsEnd(state));
+  const currentAudioNumber = useSelector((state) =>
+    getCurrentAudioNumber(state)
+  );
+  const volume = useSelector((state) => getVolume(state));
+  const currentPlaylist = useSelector((state) => getCurrentPlaylist(state));
+  const rewindTime = useSelector((state) => getRewindTime(state));
+
+  const [stir, setStir] = useState(false);
+  const [repeat, setRepeat] = useState(false);
+  const [loop, setLoop] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (audioIsEnd) {
+      if (loop) {
+        dispatch(setCurrentTime(0));
+        dispatch(setIsPlay(true));
+        dispatch(setAudioIsEnd(false));
+      } else {
+        switchAudio(currentPlaylist, currentAudioNumber, "next");
+      }
+    }
+  }, [audioIsEnd]);
+
+  const randomAudio = (currentAudioNumber, currentPlaylist) => {
+    let audioNumber = random(0, currentPlaylist.length - 1);
+    if (audioNumber === currentAudioNumber)
+      return randomAudio(currentAudioNumber, currentPlaylist);
+    return audioNumber;
+  };
+
+  const switchAudio = (currentPlaylist, currentAudioNumber, action) => {
+
+    let audioNumber = currentAudioNumber;
+
+    if (stir) {
+      audioNumber = randomAudio(currentAudioNumber, currentPlaylist);
+    } else {
+      audioNumber = nextOrPrevAudio(currentAudioNumber, action);
+    }
+
+    if (audioNumber < 0 || audioNumber >= currentPlaylist.length) {
+      if (repeat) {
+        if (currentAudioNumber < 0) {
+          audioNumber = currentPlaylist.length - 1;
+        } else {
+          audioNumber = 0;
+        }
+      } else {
+        return dispatch(setAudioIsEnd(false));
+      }
+    }
+
+    dispatch(setAudioNumber(audioNumber));
+    dispatch(setCurrentTime(0));
+    dispatch(setIsPlay(true));
+    dispatch(setAudioIsEnd(false));
+
+    return dispatch(setCurrentAudio(currentPlaylist[audioNumber]));
+  };
+
+  const setStirStatus = () => {
+    if (stir) return setStir(false);
+    return setStir(true);
+  };
+
+  const setRepeatStatus = () => {
+    if (loop) {
+      setRepeat(false);
+      return setLoop(false);
+    } else if (repeat) {
+      return setLoop(true);
+    }
+    return setRepeat(true);
+  };
 
   const handleChange = (event, value) => {
-    let audioFile = audio.current;
     dispatch(setCurrentTime(value));
-    audioFile.currentTime = value;
+    dispatch(setRewindTime(value));
   };
 
   return (
@@ -124,12 +173,19 @@ const AudioControl = ({currentAudio}) => {
               mt: 0,
             }}
           >
-            <IconButton
-              onClick={() => nextOrPrevAudio(
-                currentPlaylist,
-                currentAudioNumber,
-                "prev"
+            <IconButton onClick={setStirStatus}>
+              {stir ? (
+                <ShuffleIcon
+                  sx={{ color: "#fff", fontSize: "18px", opacity: "0.5" }}
+                />
+              ) : (
+                <ShuffleIcon sx={{ color: "#fff", fontSize: "18px" }} />
               )}
+            </IconButton>
+            <IconButton
+              onClick={() =>
+                switchAudio(currentPlaylist, currentAudioNumber, "prev")
+              }
               sx={{ padding: "5px" }}
               aria-label="previous song"
             >
@@ -151,15 +207,16 @@ const AudioControl = ({currentAudio}) => {
               </IconButton>
             )}
             <IconButton
-              onClick={() => nextOrPrevAudio(
-                currentPlaylist,
-                currentAudioNumber,
-                "next"
-              )}
+              onClick={() =>
+                switchAudio(currentPlaylist, currentAudioNumber, "next")
+              }
               sx={{ padding: "5px" }}
               aria-label="next song"
             >
               <FastForwardRounded sx={{ fontSize: "25px", color: "#fff" }} />
+            </IconButton>
+            <IconButton onClick={setRepeatStatus}>
+              {RepeatButtonIcon(loop, repeat)}
             </IconButton>
           </Box>
           <Box sx={{ width: "500px", color: "#fff" }}>
@@ -198,9 +255,7 @@ const AudioControl = ({currentAudio}) => {
             />
           </Box>
           <div className={style.timer_container}>
-            <TinyText>
-              {formatDuration(currentAudio.currentTime)}
-            </TinyText>
+            <TinyText>{formatDuration(currentAudio.currentTime)}</TinyText>
             <TinyText>{formatDuration(currentAudio.duration)}</TinyText>
           </div>
         </div>
@@ -209,12 +264,14 @@ const AudioControl = ({currentAudio}) => {
           <CurrentPlaylist />
         </div>
       </div>
-      <audio autoPlay={true} ref={audio} src={currentAudio.src}></audio>
+      <Audio
+        currentAudio={currentAudio}
+        volume={volume}
+        audioIsPlay={audioIsPlay}
+        rewindTime={rewindTime}
+      />
     </div>
   );
 };
 
 export default AudioControl;
-
-// audio.duration NAN
-//<audio muted={true} autoPlay ref={audio} src={audioFile}></audio>

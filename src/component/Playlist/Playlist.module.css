@@ -62,7 +62,7 @@
   padding: 10px 15px;
   display: grid;
   grid-template-columns: 40px 40px 2fr 5fr 1fr;
-  color: rgba(255, 255, 255, 0.707);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 16px;
   position: relative;
 }
@@ -96,10 +96,12 @@
 .song_author {
   padding-right: 30px;
   text-align: end;
-  cursor: pointer;
   z-index: 10;
 }
-.song_author:hover {
+.author_link {
+  color: rgba(255, 255, 255, 0.7);
+}
+.author_link:hover {
   color: #fff;
   text-decoration: underline;
 }

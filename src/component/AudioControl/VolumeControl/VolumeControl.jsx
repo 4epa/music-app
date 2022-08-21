@@ -14,7 +14,7 @@ const VolumeControl = ({ volume, setVolume }) => {
 
   const [oldVolumeValue, setOldVolumeValue] = useState(null);
 
-  const icons = (volume) => {
+  const Icons = (volume) => {
     if (volume <= 1 && volume >= 0.5) {
       return <VolumeUpIcon sx={{ fontSize: "25px", color: "#fff" }} />;
     } else if (volume <= 0.5 && volume >= 0.2) {
@@ -40,7 +40,7 @@ const VolumeControl = ({ volume, setVolume }) => {
   return (
     <div className={style.volume_control}>
       <div onClick={mutVolumeOrUnmute} className={style.volume_icon}>
-        {icons(volume)}
+        {Icons(volume)}
       </div>
       <Box sx={{ width: 100 }}>
         <Slider

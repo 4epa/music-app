@@ -2,7 +2,16 @@ const SET_CURRENT_AUDIO = 'SET_CURRENT_AUDIO';
 const SET_VOLUME = 'SET_VOLUME';
 const SET_AUDIO_NUMBER = 'SET_AUDIO_NUMBER';
 const SET_IS_PLAY = 'SET_IS_PLAY';
+const SET_AUDIO_IS_END = 'SET_AUDIO_IS_END';
 const SET_CURRENT_TIME = 'SET_CURRENT_TIME';
+const SET_REWIND_TIME = 'SET_REWIND_TIME';
+
+export const setRewindTime = (time) => {
+  return {
+    type: SET_REWIND_TIME,
+    time
+  }
+}
 
 export const setAudioNumber = (number) => {
   return {
@@ -32,6 +41,13 @@ export const setIsPlay = (status) => {
   }
 }
 
+export const setAudioIsEnd = (status) => {
+  return {
+    type: SET_AUDIO_IS_END,
+    status
+  }
+}
+
 export const setCurrentAudio = (audio) => {
   return {
     type: SET_CURRENT_AUDIO,
@@ -42,12 +58,24 @@ export const setCurrentAudio = (audio) => {
 const initialState = {
   currentAudio: null,
   audioIsPlay: false,
+  audioIsEnd: false,
+  rewindTime: null,
   volume: 0.2,
   audioNumberInPlaylist: null,
 }
 
 const audioReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_REWIND_TIME: 
+      return {
+        ...state,
+        rewindTime: action.time,
+      }
+    case SET_AUDIO_IS_END: 
+      return {
+        ...state,
+        audioIsEnd: action.status,
+      }
     case SET_VOLUME:
       return {
         ...state,
