@@ -1,59 +1,4 @@
-const SET_CURRENT_AUDIO = 'SET_CURRENT_AUDIO';
-const SET_VOLUME = 'SET_VOLUME';
-const SET_AUDIO_NUMBER = 'SET_AUDIO_NUMBER';
-const SET_IS_PLAY = 'SET_IS_PLAY';
-const SET_AUDIO_IS_END = 'SET_AUDIO_IS_END';
-const SET_CURRENT_TIME = 'SET_CURRENT_TIME';
-const SET_REWIND_TIME = 'SET_REWIND_TIME';
-
-export const setRewindTime = (time) => {
-  return {
-    type: SET_REWIND_TIME,
-    time
-  }
-}
-
-export const setAudioNumber = (number) => {
-  return {
-    type: SET_AUDIO_NUMBER,
-    number
-  }
-}
-
-export const setVolume = (value) => {
-  return {
-    type: SET_VOLUME,
-    value
-  }
-}
-
-export const setCurrentTime = (time) => {
-  return {
-    type: SET_CURRENT_TIME,
-    time
-  }
-}
-
-export const setIsPlay = (status) => {
-  return {
-    type: SET_IS_PLAY,
-    status
-  }
-}
-
-export const setAudioIsEnd = (status) => {
-  return {
-    type: SET_AUDIO_IS_END,
-    status
-  }
-}
-
-export const setCurrentAudio = (audio) => {
-  return {
-    type: SET_CURRENT_AUDIO,
-    audio
-  }
-}
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentAudio: null,
@@ -62,55 +7,44 @@ const initialState = {
   rewindTime: null,
   volume: 0.2,
   audioNumberInPlaylist: null,
-}
+};
 
-const audioReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_REWIND_TIME: 
-      return {
-        ...state,
-        rewindTime: action.time,
-      }
-    case SET_AUDIO_IS_END: 
-      return {
-        ...state,
-        audioIsEnd: action.status,
-      }
-    case SET_VOLUME:
-      return {
-        ...state,
-        volume: action.value
-      }
-    case SET_AUDIO_NUMBER:
-      return {
-        ...state,
-        audioNumberInPlaylist: action.number
-      }
-    case SET_CURRENT_TIME:
-      return {
-        ...state,
-        currentAudio: {
-          ...state.currentAudio,
-          currentTime: action.time
-        }
-      }
-    case SET_IS_PLAY:
-      return {
-        ...state,
-        audioIsPlay: action.status,
-      }
-    case SET_CURRENT_AUDIO:
-      return {
-        ...state,
-        currentAudio: action.audio
-      }
-    default: 
-      return state
-  }
-}
+const audioSlice = createSlice({
+  name: "audio",
+  initialState,
+  reducers: {
+    setCurrentAudio: (state, action) => {
+      state.currentAudio = action.payload;
+    },
+    setIsPlay: (state, action) => {
+      state.audioIsPlay = action.payload;
+    },
+    setAudioIsEnd: (state, action) => {
+      state.audioIsEnd = action.payload;
+    },
+    setRewindTime: (state, action) => {
+      state.rewindTime = action.payload;
+    },
+    setVolume: (state, action) => {
+      state.volume = action.payload;
+    },
+    setAudioNumber: (state, action) => {
+      state.audioNumberInPlaylist = action.payload;
+    },
+    setCurrentTime: (state, action) => {
+      state.currentAudio.currentTime = action.payload;
+    },
+  },
+});
 
-export default audioReducer;
+export const {
+  setCurrentAudio,
+  setIsPlay,
+  setAudioIsEnd,
+  setRewindTime,
+  setVolume,
+  setAudioNumber,
+  setCurrentTime,
+} = audioSlice.actions;
 
-
-
-
+export default audioSlice.reducer;

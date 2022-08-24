@@ -9,6 +9,10 @@
   padding: 5px 20px;
 }
 .sitebar_container {
+  padding-top: 50px;
+  position: fixed;
+  width: 13.1%;
+  height: 100%;
   z-index: 1;
   background-color: #000;
   box-shadow: 1px 1px 10px #111;

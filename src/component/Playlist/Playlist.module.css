@@ -106,7 +106,7 @@
   text-decoration: underline;
 }
 .song_container:hover {
-  background-color: rgb(65, 44, 44);
+  background-color: rgba(65, 44, 44, 0.7);
 }
 .song_container_selected {
   position: relative;
@@ -118,7 +118,7 @@
   grid-template-columns: 40px 40px 2fr 5fr 1fr;
   color: rgba(255, 255, 255, 0.707);
   font-size: 16px;
-  background-color: rgb(107, 58, 58);
+  background-color: rgba(107, 58, 58, 0.7);
 }
 .song_number {
   font-size: 16px;

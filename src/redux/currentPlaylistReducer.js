@@ -1,26 +1,19 @@
-const SET_CURRENT_PLAYLIST = 'SET_CURRENT_PLAYLIST';
-
-export const setCurrentPlaylist = (playlist) => {
-  return {
-    type: SET_CURRENT_PLAYLIST,
-    playlist
-  }
-}
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentPlaylist: null,
-}
+};
 
-const currentPlaylistReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_CURRENT_PLAYLIST:
-      return {
-        ...state,
-        currentPlaylist: action.playlist
-      }
-    default: 
-      return state
-  }
-}
+const currentPlaylistSlice = createSlice({
+  name: "currentPlaylist",
+  initialState,
+  reducers: {
+    setCurrentPlaylist: (state, action) => {
+      state.currentPlaylist = action.payload;
+    },
+  },
+});
 
-export default currentPlaylistReducer;
+export const { setCurrentPlaylist } = currentPlaylistSlice.actions;
+
+export default currentPlaylistSlice.reducer;

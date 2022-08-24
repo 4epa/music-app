@@ -79,7 +79,7 @@ const SongBox = ({ song, songs, currentAudio, audioIsPlay }) => {
       </div>
       <h3 className={style.song_title}>{song.title}</h3>
       <span className={style.song_author}>
-        <NavLink className={style.author_link} to="/artis/1">{song.author}</NavLink></span>
+        <NavLink className={style.author_link} to="/artist/1">{song.author}</NavLink></span>
       <span className={style.song_time}>{formatDuration(song.duration)}</span>
     </div>
   );

@@ -1,6 +1,7 @@
 .greeting {
   position: relative;
   padding-bottom: 50px;
+  margin-bottom: 50px;
 }
 .greeting_container {
   padding: 0px 0px 50px 0px;

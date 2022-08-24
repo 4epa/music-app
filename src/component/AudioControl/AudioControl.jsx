@@ -157,7 +157,7 @@ const AudioControl = ({ currentAudio }) => {
   };
 
   return (
-    <div className="control_panel">
+    <div>
       <div className={style.control_container}>
         <AudioInfo
           cover={currentAudio.cover}

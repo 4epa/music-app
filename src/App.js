@@ -5,6 +5,7 @@ import { Route, Routes, BrowserRouter} from '../node_modules/react-router-dom/re
 import AudioControlContainer from './component/AudioControl/AudioControlContainer';
 import Playlist from './component/Playlist/Playlist';
 import HomePage from './component/HomePage/HomePage';
+import ArtistProfile from './component/ArtistProfile/ArtistProfile';
 
 const App = () => {
   return (
@@ -17,9 +18,12 @@ const App = () => {
             <Routes>
               <Route path="/playlist/:id" element={<Playlist />} />
               <Route path="" element={<HomePage />}/>
+              <Route path="/artist/:id" element={<ArtistProfile />}/>
             </Routes>
           </div>
-          <AudioControlContainer />
+          <div className="control_bar">
+            <AudioControlContainer />
+          </div>
         </div>
       </BrowserRouter>
     </div>

@@ -13,10 +13,6 @@ const PlaylistBox = ({ playlistCover, playlistId, playlistTitle, artist }) => {
         <div className={style.card_title}>
           {playlistTitle}
         </div>
-        <h5 className={style.card_artists}>{artist}</h5>
-        {/* <button className={style.button_play}>
-        <PlayArrowIcon sx={{ color: "#222", fontSize: "40px" }} />
-      </button> */}
       </div>
     </NavLink>
   );

@@ -1,26 +1,31 @@
-const SET_PLAYLIST = "SET_PLAYLIST";
-
-export const setPlaylist = (playlist) => {
-  return {
-    type: SET_PLAYLIST,
-    playlist
-  }
-}
+import { createSlice } from "@reduxjs/toolkit";
+import { audioApi } from "../api/api";
 
 const initialState = {
-  playlist: null
+  playlist: null,
+  tracklist: [],
 };
 
-const playlistReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_PLAYLIST:
-      return {
-        ...state,
-        playlist: action.playlist
-      }
-    default:
-      return state;
-  }
-};
+const playlistSlice = createSlice({
+  name: "playlist",
+  initialState,
+  reducers: {
+    setPlaylist: (state, action) => {
+      state.playlist = action.payload;
+    },
+    setTracklist: (state, action) => {
+      state.tracklist = action.payload;
+    },
+  },
+});
 
-export default playlistReducer;
+export const { setPlaylist, setTracklist } = playlistSlice.actions;
+
+export const getFilterTracklist = (audioSame, audioMood, audioArtist) => {
+  return async (dispatch) => {
+    const tracklist = await audioApi.getAudioFiles(audioSame, audioMood, audioArtist);
+    dispatch(setTracklist(tracklist));
+  };
+}
+
+export default playlistSlice.reducer;

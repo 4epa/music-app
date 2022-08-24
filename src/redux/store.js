@@ -1,19 +1,18 @@
-import { combineReducers, legacy_createStore as createStore, applyMiddleware } from "redux";
-import audioReducer from './audioReducer';
-import playlistsReducer from './playListsReducer';
-import thunkMiddleware from 'redux-thunk'
-import currentPlaylistReducer from './currentPlaylistReducer';
-import playListReducer from './playListReducer';
-import authReducer from "./authReducer";
+import audioReducer from "./audioReducer";
+import playlistsReducer from "./playListsReducer";
+import currentPlaylistReducer from "./currentPlaylistReducer";
+import playListReducer from "./playListReducer";
+import artistReducer from "./artistReducer";
+import { configureStore } from "@reduxjs/toolkit";
 
-let reducers = combineReducers({
-  audio: audioReducer,
-  playlists: playlistsReducer,
-  playlist: playListReducer,
-  currentPlaylist: currentPlaylistReducer,
-  authorization: authReducer
-})
-
-const store = createStore(reducers, applyMiddleware(thunkMiddleware))
+export const store = configureStore({
+  reducer: {
+    audio: audioReducer,
+    artist: artistReducer,
+    playlists: playlistsReducer,
+    playlist: playListReducer,
+    currentPlaylist: currentPlaylistReducer,
+  },
+});
 
 export default store;

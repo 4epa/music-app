@@ -44,38 +44,46 @@ h1,h2,h3,h4,h5,h6{font-size: inherit;font-weight: 400;}
   overflow: hidden;
   display: grid;
   grid-template-columns: 200px 10fr;
-  grid-template-rows: 55px 100%;
+  grid-template-rows: 100% 100px;
   grid-template-areas: 
-    'header header'
     'sitebar content'
+    'control_bar control_bar'
   ;
-  width: 100vw;
-  height: 100vh;
+  min-width: 100%;
+  min-height: 100vh;
+  height: 100%;
 }
 .content {
-  overflow: auto;
+  overflow: hidden;
   z-index: 0;
   background-color: #111;
   grid-area: content;
-  position: relative;
+  padding-bottom: 100px;
+}
+.content::-webkit-scrollbar {
+  width: 0px;
 }
 .sitebar {
+  padding-top: 50px;
   grid-area: sitebar;
 }
 .header {
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  padding: 15px 0px;
   z-index: 5;
   display: flex;
   align-items: center;
-  background: #000;
   grid-area: header;
-  box-shadow: 1px 1px 10px #111;
 }
-.control_panel {
+.control_bar {
+  grid-area: control_bar;
+  position: fixed;
   border-top: 2px solid #333;
   z-index: 10;
   display: flex;
   justify-content: space-around;
-  position: absolute;
   bottom: 0px;
   padding: 15px;
   width: 100%;

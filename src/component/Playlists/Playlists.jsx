@@ -5,7 +5,7 @@ import PlaylistBox from "./PlaylistBox/PlaylistBox";
 
 const Playlists = () => {
 
-  const playlistsWithState = useSelector(state => state.playlists)
+  const playlistsWithState = useSelector(state => state.playlists);
 
   const playlists = playlistsWithState.map(plalist => {
     return <PlaylistBox

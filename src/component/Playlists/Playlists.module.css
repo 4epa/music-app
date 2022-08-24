@@ -1,26 +1,30 @@
 .playlists_container {
   padding: 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 10px;
 }
 .playlist_card {
   transition: all 0.5s ease 0s;
-  max-width: 200px;
+  max-width: 410px;
+  max-height: 100px;
   background-color: rgba(152, 94, 136, 0.344);
-  padding: 15px;
   border-radius: 5px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.351);
   position: relative;
-}
-.playlist_card > *:not(:last-child) {
-  margin-bottom: 10px;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 4fr;
+  grid-template-areas: 
+    "cover title"
+  ;
+  grid-gap: 25px;
+  overflow: hidden;
 }
 .card_img {
-  width: 100%;
+  grid-area: cover;
   padding-bottom: 100%;
   position: relative;
-  border-radius: 5px;
   overflow: hidden;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.351);
 }
@@ -33,12 +37,14 @@
   object-fit: cover;
 }
 .card_title {
+  grid-area: title;
   color: #fff;
   font-size: 20px;
   font-weight: 700;
   display: block;
 }
 .card_artists {
+  grid-area: artist;
   color: rgba(255, 255, 255, 0.445);
   font-size: 14px;
   cursor: pointer;
@@ -50,18 +56,11 @@
   opacity: 100;
 }
 .button_play {
+  grid-area: button;
   transition: all 0.2s ease 0s;
-  position: absolute;
-  right: 10px;
-  top: 130px;
-  border-radius: 50%;
-  padding: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(255, 136, 221);
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.351);
-  opacity: 0;
 }
 .button_play:hover {
   transform: scale(1.1, 1.1);
