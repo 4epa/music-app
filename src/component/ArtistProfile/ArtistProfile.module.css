@@ -68,3 +68,36 @@
   background-color: rgb(107, 58, 58);
   border-bottom: 2px solid #222;
 }
+@media (max-width: 1024px) {
+  .ava {
+    grid-area: ava;
+    height: 200px;
+    width: 200px;
+  }
+}
+@media (max-width: 770px) {
+  .ava {
+    grid-area: ava;
+    height: 150px;
+    width: 150px;
+  }
+  .name {
+    font-size: 30px;
+  }
+}
+@media (max-width: 450px) {
+  .ava {
+    grid-area: ava;
+    height: 150px;
+    width: 150px;
+  }
+  .artist_info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  .description {
+    text-align: center;
+  }
+}

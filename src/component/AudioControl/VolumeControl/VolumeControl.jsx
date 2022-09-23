@@ -6,7 +6,7 @@ import { useState } from "react";
 import React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import style from "../AudioContol.module.css";
+import style from "./VolumeControl.module.css";
 import { useDispatch } from "react-redux";
 
 const VolumeControl = ({ volume, setVolume }) => {
@@ -54,8 +54,8 @@ const VolumeControl = ({ volume, setVolume }) => {
             color: "#fff",
             height: 4,
             "& .MuiSlider-thumb": {
-              width: 8,
-              height: 8,
+              width: 4,
+              height: 4,
               "&:before": {
                 boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
               },

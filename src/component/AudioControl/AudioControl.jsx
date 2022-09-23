@@ -37,12 +37,14 @@ import {
   getCurrentPlaylist,
   getRewindTime,
 } from "../../redux/selectors/audioSelectors";
+import ClearIcon from '@mui/icons-material/Clear';
+import { setShowMobileAudioControler } from "../../redux/appReducer";
 
 const TinyText = styled(Typography)({
   color: "#fff",
-  fontSize: "14px",
+  fontSize: "12px",
   opacity: 0.6,
-  fontWeight: 500,
+  fontWeight: 400,
   letterSpacing: 0.2,
 });
 
@@ -58,18 +60,25 @@ const nextOrPrevAudio = (audioNumber, action) => {
   return audioNumber;
 };
 
+const iconSize = (size) => {
+  return (screenWidth <= 450) ? `${size + 15}px` : `${size}px`
+}
+
 const RepeatButtonIcon = (loop, repeat) => {
+
   if (loop) {
     return (
-      <RepeatOneIcon sx={{ color: "#fff", fontSize: "18px", opacity: "0.5" }} />
+      <RepeatOneIcon sx={{ color: "#fff", fontSize: iconSize(18), opacity: "0.5" }} />
     );
   } else if (repeat) {
     return (
-      <RepeatIcon sx={{ color: "#fff", fontSize: "18px", opacity: "0.5" }} />
+      <RepeatIcon sx={{ color: "#fff", fontSize: iconSize(18), opacity: "0.5" }} />
     );
   }
-  return <RepeatIcon sx={{ color: "#fff", fontSize: "18px" }} />;
+  return <RepeatIcon sx={{ color: "#fff", fontSize: iconSize(18) }} />;
 };
+
+const screenWidth = window.screen.width;
 
 const AudioControl = ({ currentAudio }) => {
   const audioIsPlay = useSelector((state) => getAudioIsPlay(state));
@@ -157,8 +166,11 @@ const AudioControl = ({ currentAudio }) => {
   };
 
   return (
-    <div>
+    <div style={{height: "auto"}}>
       <div className={style.control_container}>
+        <div onClick={() => dispatch(setShowMobileAudioControler(false))} className={style.close__btn}>
+          <ClearIcon sx={{color: "#fff"}} />
+        </div>
         <AudioInfo
           cover={currentAudio.cover}
           title={currentAudio.title}
@@ -176,10 +188,10 @@ const AudioControl = ({ currentAudio }) => {
             <IconButton onClick={setStirStatus}>
               {stir ? (
                 <ShuffleIcon
-                  sx={{ color: "#fff", fontSize: "18px", opacity: "0.5" }}
+                  sx={{ color: "#fff", fontSize: iconSize(18), opacity: "0.5" }}
                 />
               ) : (
-                <ShuffleIcon sx={{ color: "#fff", fontSize: "18px" }} />
+                <ShuffleIcon sx={{ color: "#fff", fontSize: iconSize(18) }} />
               )}
             </IconButton>
             <IconButton
@@ -189,21 +201,21 @@ const AudioControl = ({ currentAudio }) => {
               sx={{ padding: "5px" }}
               aria-label="previous song"
             >
-              <FastRewindRounded sx={{ fontSize: "25px", color: "#fff" }} />
+              <FastRewindRounded sx={{ fontSize: iconSize(25), color: "#fff" }} />
             </IconButton>
             {!audioIsPlay ? (
               <IconButton
                 onClick={() => dispatch(setIsPlay(true))}
                 sx={{ padding: "5px" }}
               >
-                <PlayArrowRounded sx={{ fontSize: "30px", color: "#fff" }} />
+                <PlayArrowRounded sx={{ fontSize: iconSize(30), color: "#fff" }} />
               </IconButton>
             ) : (
               <IconButton
                 onClick={() => dispatch(setIsPlay(false))}
                 sx={{ padding: "5px" }}
               >
-                <PauseRounded sx={{ fontSize: "30px", color: "#fff" }} />
+                <PauseRounded sx={{ fontSize:iconSize(30), color: "#fff" }} />
               </IconButton>
             )}
             <IconButton
@@ -213,13 +225,14 @@ const AudioControl = ({ currentAudio }) => {
               sx={{ padding: "5px" }}
               aria-label="next song"
             >
-              <FastForwardRounded sx={{ fontSize: "25px", color: "#fff" }} />
+              <FastForwardRounded sx={{ fontSize: iconSize(25), color: "#fff" }} />
             </IconButton>
             <IconButton onClick={setRepeatStatus}>
               {RepeatButtonIcon(loop, repeat)}
             </IconButton>
           </Box>
-          <Box sx={{ width: "500px", color: "#fff" }}>
+          <Box sx={{ width: "100%", color: "#fff", display: "flex", alignItems: "center", gap: "10px" }}>
+          <TinyText>{formatDuration(currentAudio.currentTime)}</TinyText>
             <Slider
               onChange={handleChange}
               aria-label="time-indicator"
@@ -251,12 +264,15 @@ const AudioControl = ({ currentAudio }) => {
                 "& .MuiSlider-rail": {
                   opacity: 0.28,
                 },
+                "& ": {
+                  padding: "0px 0px 15px 0px",
+                }
               }}
             />
+            <TinyText>{formatDuration(currentAudio.duration)}</TinyText>
           </Box>
           <div className={style.timer_container}>
-            <TinyText>{formatDuration(currentAudio.currentTime)}</TinyText>
-            <TinyText>{formatDuration(currentAudio.duration)}</TinyText>
+
           </div>
         </div>
         <div className={style.right__controle_containe}>

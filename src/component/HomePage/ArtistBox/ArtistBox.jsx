@@ -1,6 +1,6 @@
 import style from "./ArtistBox.module.css";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux/es/exports";
+import { useSelector } from "react-redux";
 import { getArtist } from "../../../redux/selectors/artistSelector";
 
 const ArtistBox = (props) => {

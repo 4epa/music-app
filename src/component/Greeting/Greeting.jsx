@@ -28,10 +28,7 @@ const Greeting = () => {
 
   return (
     <div className={style.greeting}>
-      <div className={style.greeting_container}>
-        <h2 className={style.greeting__text}>{greeting}</h2>
-        <img className={style.greeting__bg} src={greetingBackground} alt="" />
-      </div>
+      <h2 className={style.greeting__text}>{greeting}</h2>
       <img
         className={style.greeting__bg_blur}
         src={greetingBackground}

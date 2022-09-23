@@ -1,6 +1,6 @@
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
-import style from "../Playlist.module.css";
+import style from "./SongBox.module.css";
 import { useEffect, useState } from "react";
 import {
   setCurrentAudio,

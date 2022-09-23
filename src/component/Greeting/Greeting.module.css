@@ -1,10 +1,8 @@
 .greeting {
   position: relative;
   padding-bottom: 50px;
-  margin-bottom: 50px;
 }
 .greeting_container {
-  padding: 0px 0px 50px 0px;
   position: relative;
 }
 .greeting__text {
@@ -15,16 +13,6 @@
   padding: 20px 20px 20px 20px;
   text-shadow: 1px 1px 15px rgba(17, 17, 17, 0.5);
 }
-.greeting__bg {
-  z-index: -1;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: blur(5px);
-}
 .greeting__bg_blur {
   z-index: -2;
   position: absolute;
@@ -33,6 +21,14 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(10px);
-
+  filter: blur(50px);
+}
+@media (max-width: 450px) {
+  .greeting__text {
+    font-size: 30px;
+    padding: 10px;
+  }
+  .greeting {
+    padding-bottom: 20px;
+  }
 }

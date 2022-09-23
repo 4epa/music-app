@@ -1,7 +1,7 @@
 import style from "./ArtistProfile.module.css";
 import SongBox from "../Playlist/SongBox/SongBox";
 import { getTracklist } from "../../redux/selectors/playlistSelectors";
-import { useDispatch, useSelector } from "react-redux/es/exports";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getAudioIsPlay,
   getCurrentAudio,

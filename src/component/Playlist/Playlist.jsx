@@ -1,7 +1,6 @@
-import { useDispatch, useSelector } from "react-redux/es/exports";
+import { useDispatch, useSelector } from "react-redux";
 import SongBox from "./SongBox/SongBox";
 import style from "./Playlist.module.css";
-import { NavLink } from "react-router-dom";
 import { setPlaylist } from "../../redux/playListReducer";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";

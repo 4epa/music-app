@@ -1,0 +1,60 @@
+.mobile_control {
+  position: fixed;
+  bottom: 60px;
+  width: 100%;
+  z-index: 20;
+  background-color: #222;
+}
+.mobile_control_container {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 10px 5px 10px;
+  position: relative;
+}
+.descripton {
+  color: rgba(255, 255, 255, 0.6);
+  display: grid;
+  grid-template-areas: 
+    "cover title"
+    "cover author"
+  ;
+  column-gap: 20px;
+  z-index: 25;
+}
+.cover {
+  grid-area: cover;
+  position: relative;
+  width: 40px;
+  padding-bottom: 40px;
+}
+.cover img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+}
+.title {
+  grid-area: title;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 600;
+}
+.authot {
+  font-size: 14px;
+  grid-area: author;
+}
+.buttons {
+  z-index: 25;
+}
+.bg__mobileControler {
+  z-index: 21;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+@media (min-width: 770px) {
+  .mobile_control {
+    display: none;
+  }
+}

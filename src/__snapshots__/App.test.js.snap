@@ -1,0 +1,558 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders App link 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="App"
+      >
+        <div
+          class="wrapper"
+        >
+          <header
+            class="header"
+          >
+            <div
+              class="header_bg"
+            />
+            <div
+              class="header_container"
+            >
+              <h1
+                class="app_name"
+              >
+                Music player
+              </h1>
+            </div>
+          </header>
+          <div
+            class="sitebar_container"
+          >
+            <ul
+              class="menu"
+            >
+              <li
+                class="menu_item"
+              >
+                <a
+                  aria-current="page"
+                  class="link_active"
+                  href="/"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1wru6aq-MuiSvgIcon-root"
+                    data-testid="HomeRoundedIcon"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z"
+                    />
+                  </svg>
+                  Home
+                </a>
+              </li>
+              <li
+                class="menu_item"
+              >
+                <a
+                  class="link"
+                  href="/search"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1wru6aq-MuiSvgIcon-root"
+                    data-testid="SearchRoundedIcon"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                    />
+                  </svg>
+                  Search
+                </a>
+              </li>
+              <li
+                class="menu_item"
+              >
+                <a
+                  class="link"
+                  href="/my/collection"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1wru6aq-MuiSvgIcon-root"
+                    data-testid="LibraryMusicRoundedIcon"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-3 5h-2v5.37c0 1.27-.9 2.44-2.16 2.6-1.69.23-3.11-1.25-2.8-2.95.2-1.1 1.18-1.95 2.3-2.02.63-.04 1.2.16 1.66.51V6c0-.55.45-1 1-1h2c.55 0 1 .45 1 1s-.45 1-1 1zM3 6c-.55 0-1 .45-1 1v13c0 1.1.9 2 2 2h13c.55 0 1-.45 1-1s-.45-1-1-1H5c-.55 0-1-.45-1-1V7c0-.55-.45-1-1-1z"
+                    />
+                  </svg>
+                  My collection
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="content"
+          >
+            <div>
+              <div
+                class="greeting"
+              >
+                <div
+                  class="greeting_container"
+                >
+                  <h2
+                    class="greeting__text"
+                  >
+                    Good evening
+                  </h2>
+                  <img
+                    alt=""
+                    class="greeting__bg"
+                    src="evening_img.webp"
+                  />
+                </div>
+                <img
+                  alt=""
+                  class="greeting__bg_blur"
+                  src="evening_img.webp"
+                />
+              </div>
+              <div
+                class="playlists_container"
+              >
+                <a
+                  class=""
+                  href="/playlist/1"
+                >
+                  <div
+                    class="playlist_card"
+                  >
+                    <div
+                      class="card_img"
+                    >
+                      <img
+                        alt="#"
+                        src="https://i.pinimg.com/736x/14/a1/d6/14a1d63d4c378bea6d32addaceb04765.jpg"
+                      />
+                    </div>
+                    <div
+                      class="card_title"
+                    >
+                      Hyperpop &lt;3
+                    </div>
+                  </div>
+                </a>
+                <a
+                  class=""
+                  href="/playlist/2"
+                >
+                  <div
+                    class="playlist_card"
+                  >
+                    <div
+                      class="card_img"
+                    >
+                      <img
+                        alt="#"
+                        src="https://s.abcnews.com/images/US/Hip-hop-protest-story_hpMain_16x9_992.jpg"
+                      />
+                    </div>
+                    <div
+                      class="card_title"
+                    >
+                      Hip Hop
+                    </div>
+                  </div>
+                </a>
+                <a
+                  class=""
+                  href="/playlist/3"
+                >
+                  <div
+                    class="playlist_card"
+                  >
+                    <div
+                      class="card_img"
+                    >
+                      <img
+                        alt="#"
+                        src="https://kartinkin.net/uploads/posts/2021-07/1625796069_26-kartinkin-com-p-krasivie-atmosfernie-oboi-krasivie-28.jpg"
+                      />
+                    </div>
+                    <div
+                      class="card_title"
+                    >
+                      Atmosphere
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div
+                class="artist"
+              >
+                <a
+                  class=""
+                  href="/artist/1"
+                >
+                  <div
+                    class="artist_container"
+                  >
+                    <div
+                      class="artist_ava"
+                    >
+                      <img
+                        alt=""
+                        src="fdf.jpg"
+                      />
+                    </div>
+                    <div
+                      class="artist_description"
+                    >
+                      <h2
+                        class="title"
+                      >
+                        Recommendation
+                      </h2>
+                      <h3
+                        class="artist_name"
+                      >
+                        4epaaa
+                      </h3>
+                      <p
+                        class="artist_info"
+                      >
+                        Hello my name 4epaaa&lt;3
+                      </p>
+                      <p
+                        class="artist_info"
+                      >
+                        Listening my new track!
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div
+            class="control_bar"
+          >
+            <div>
+              <span />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="App"
+    >
+      <div
+        class="wrapper"
+      >
+        <header
+          class="header"
+        >
+          <div
+            class="header_bg"
+          />
+          <div
+            class="header_container"
+          >
+            <h1
+              class="app_name"
+            >
+              Music player
+            </h1>
+          </div>
+        </header>
+        <div
+          class="sitebar_container"
+        >
+          <ul
+            class="menu"
+          >
+            <li
+              class="menu_item"
+            >
+              <a
+                aria-current="page"
+                class="link_active"
+                href="/"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1wru6aq-MuiSvgIcon-root"
+                  data-testid="HomeRoundedIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z"
+                  />
+                </svg>
+                Home
+              </a>
+            </li>
+            <li
+              class="menu_item"
+            >
+              <a
+                class="link"
+                href="/search"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1wru6aq-MuiSvgIcon-root"
+                  data-testid="SearchRoundedIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                  />
+                </svg>
+                Search
+              </a>
+            </li>
+            <li
+              class="menu_item"
+            >
+              <a
+                class="link"
+                href="/my/collection"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1wru6aq-MuiSvgIcon-root"
+                  data-testid="LibraryMusicRoundedIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-3 5h-2v5.37c0 1.27-.9 2.44-2.16 2.6-1.69.23-3.11-1.25-2.8-2.95.2-1.1 1.18-1.95 2.3-2.02.63-.04 1.2.16 1.66.51V6c0-.55.45-1 1-1h2c.55 0 1 .45 1 1s-.45 1-1 1zM3 6c-.55 0-1 .45-1 1v13c0 1.1.9 2 2 2h13c.55 0 1-.45 1-1s-.45-1-1-1H5c-.55 0-1-.45-1-1V7c0-.55-.45-1-1-1z"
+                  />
+                </svg>
+                My collection
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="content"
+        >
+          <div>
+            <div
+              class="greeting"
+            >
+              <div
+                class="greeting_container"
+              >
+                <h2
+                  class="greeting__text"
+                >
+                  Good evening
+                </h2>
+                <img
+                  alt=""
+                  class="greeting__bg"
+                  src="evening_img.webp"
+                />
+              </div>
+              <img
+                alt=""
+                class="greeting__bg_blur"
+                src="evening_img.webp"
+              />
+            </div>
+            <div
+              class="playlists_container"
+            >
+              <a
+                class=""
+                href="/playlist/1"
+              >
+                <div
+                  class="playlist_card"
+                >
+                  <div
+                    class="card_img"
+                  >
+                    <img
+                      alt="#"
+                      src="https://i.pinimg.com/736x/14/a1/d6/14a1d63d4c378bea6d32addaceb04765.jpg"
+                    />
+                  </div>
+                  <div
+                    class="card_title"
+                  >
+                    Hyperpop &lt;3
+                  </div>
+                </div>
+              </a>
+              <a
+                class=""
+                href="/playlist/2"
+              >
+                <div
+                  class="playlist_card"
+                >
+                  <div
+                    class="card_img"
+                  >
+                    <img
+                      alt="#"
+                      src="https://s.abcnews.com/images/US/Hip-hop-protest-story_hpMain_16x9_992.jpg"
+                    />
+                  </div>
+                  <div
+                    class="card_title"
+                  >
+                    Hip Hop
+                  </div>
+                </div>
+              </a>
+              <a
+                class=""
+                href="/playlist/3"
+              >
+                <div
+                  class="playlist_card"
+                >
+                  <div
+                    class="card_img"
+                  >
+                    <img
+                      alt="#"
+                      src="https://kartinkin.net/uploads/posts/2021-07/1625796069_26-kartinkin-com-p-krasivie-atmosfernie-oboi-krasivie-28.jpg"
+                    />
+                  </div>
+                  <div
+                    class="card_title"
+                  >
+                    Atmosphere
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div
+              class="artist"
+            >
+              <a
+                class=""
+                href="/artist/1"
+              >
+                <div
+                  class="artist_container"
+                >
+                  <div
+                    class="artist_ava"
+                  >
+                    <img
+                      alt=""
+                      src="fdf.jpg"
+                    />
+                  </div>
+                  <div
+                    class="artist_description"
+                  >
+                    <h2
+                      class="title"
+                    >
+                      Recommendation
+                    </h2>
+                    <h3
+                      class="artist_name"
+                    >
+                      4epaaa
+                    </h3>
+                    <p
+                      class="artist_info"
+                    >
+                      Hello my name 4epaaa&lt;3
+                    </p>
+                    <p
+                      class="artist_info"
+                    >
+                      Listening my new track!
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="control_bar"
+        >
+          <div>
+            <span />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

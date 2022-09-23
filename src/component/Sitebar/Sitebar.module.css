@@ -1,4 +1,6 @@
 .menu {
+  position: fixed;
+  top: 50px;
   padding: 25px 0px;
   display: flex;
   flex-direction: column;
@@ -10,8 +12,8 @@
 }
 .sitebar_container {
   padding-top: 50px;
-  position: fixed;
-  width: 13.1%;
+  position: relative;
+  width: 100%;
   height: 100%;
   z-index: 1;
   background-color: #000;
@@ -28,4 +30,42 @@
   align-items: center;
   font-size: 16px;
   color: #fff;
+}
+.nav_bar_icon {
+  font-size: 20; 
+  margin-right: 10px;
+}
+
+@media (max-width: 770px) {
+  .menu {
+    position: relative;
+    display: flex;
+    padding: 0px;
+    top: 0px;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: #000;
+    width: 100%;
+  }
+  .link span {
+    display: none;
+  }
+  .link_active span {
+    display: none;
+  }
+  .link {
+    font-size: 20px;
+  }
+  .sitebar_container {
+    border-top: 2px solid rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    position: fixed;
+    padding: 0px;
+    bottom: 0px;
+    background-color: #000;
+    box-shadow: 1px 1px 10px #111;
+    height: 60px;
+    z-index: 100;
+  }
 }

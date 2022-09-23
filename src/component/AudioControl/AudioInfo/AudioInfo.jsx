@@ -1,4 +1,4 @@
-import style from '../AudioContol.module.css';
+import style from './AudioInfo.module.css';
 
 const AudioInfo = (props) => {
   return (

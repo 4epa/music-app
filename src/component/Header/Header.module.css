@@ -23,3 +23,11 @@
   height: 100%;
   width: 100%;
 }
+@media (max-width: 770px) {
+  .header_container {
+    display: none;
+  }
+  .header_bg_active {
+    display: none;
+  }
+}

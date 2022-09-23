@@ -1,6 +1,4 @@
-import style from "../Playlists.module.css";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PauseIcon from "@mui/icons-material/Pause";
+import style from "./PlaylistBox.module.css";
 import { NavLink } from "react-router-dom";
 
 const PlaylistBox = ({ playlistCover, playlistId, playlistTitle, artist }) => {
