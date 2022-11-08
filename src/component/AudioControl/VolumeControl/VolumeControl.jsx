@@ -6,24 +6,34 @@ import { useState } from "react";
 import React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import style from "./VolumeControl.module.css";
 import { useDispatch } from "react-redux";
+import styled from "@emotion/styled";
+import { IconButton } from "@mui/material";
+
+const VolumeControlContainer = styled.div`
+  position: relative;
+  display: grid;
+  grid-template-columns: 35px 4fr;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+`;
+
+const Icons = ({ volume }) => {
+  if (volume <= 1 && volume >= 0.5) {
+    return <VolumeUpIcon sx={{ fontSize: "25px", color: "#fff" }} />;
+  } else if (volume <= 0.5 && volume >= 0.2) {
+    return <VolumeDownIcon sx={{ fontSize: "25px", color: "#fff" }} />;
+  } else if (volume <= 0.2 && volume > 0) {
+    return <VolumeMuteIcon sx={{ fontSize: "25px", color: "#fff" }} />;
+  }
+  return <VolumeOffIcon sx={{ fontSize: "25px", color: "#fff" }} />;
+};
 
 const VolumeControl = ({ volume, setVolume }) => {
   const dispatch = useDispatch();
 
   const [oldVolumeValue, setOldVolumeValue] = useState(null);
-
-  const Icons = (volume) => {
-    if (volume <= 1 && volume >= 0.5) {
-      return <VolumeUpIcon sx={{ fontSize: "25px", color: "#fff" }} />;
-    } else if (volume <= 0.5 && volume >= 0.2) {
-      return <VolumeDownIcon sx={{ fontSize: "25px", color: "#fff" }} />;
-    } else if (volume <= 0.2 && volume > 0) {
-      return <VolumeMuteIcon sx={{ fontSize: "25px", color: "#fff" }} />;
-    }
-    return <VolumeOffIcon sx={{ fontSize: "25px", color: "#fff" }} />;
-  };
 
   const mutVolumeOrUnmute = () => {
     if (volume > 0) {
@@ -38,10 +48,17 @@ const VolumeControl = ({ volume, setVolume }) => {
   };
 
   return (
-    <div className={style.volume_control}>
-      <div onClick={mutVolumeOrUnmute} className={style.volume_icon}>
-        {Icons(volume)}
-      </div>
+    <VolumeControlContainer>
+      <IconButton
+        onClick={mutVolumeOrUnmute}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          position: "relative",
+        }}
+      >
+        <Icons volume={volume} />
+      </IconButton>
       <Box sx={{ width: 100 }}>
         <Slider
           onChange={handleChange}
@@ -73,8 +90,8 @@ const VolumeControl = ({ volume, setVolume }) => {
           }}
         />
       </Box>
-    </div>
+    </VolumeControlContainer>
   );
 };
 
-export default VolumeControl;
+export default React.memo(VolumeControl);

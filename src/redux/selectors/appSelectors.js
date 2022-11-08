@@ -2,8 +2,12 @@ const getAppDevice = (state) => {
   return state.appOptions.userDevice;
 };
 
-const getMobileControlerShow = (state) => {
-  return state.appOptions.showMobileAudioControler;
+const getMobileControllerShow = (state) => {
+  return state.appOptions.showMobileAudioController;
 };
 
-export { getAppDevice, getMobileControlerShow };
+const getInitializeApp = (state) => {
+  return state.appOptions.initializeApp;
+};
+
+export { getAppDevice, getMobileControllerShow, getInitializeApp };

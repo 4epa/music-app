@@ -1,50 +1,68 @@
 import "./App.css";
-import Header from "./component/Header/Header";
-import Sitebar from "./component/Sitebar/Sitebar";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
-import AudioControlContainer from "./component/AudioControl/AudioControlContainer";
-import Playlist from "./component/Playlist/Playlist";
-import HomePage from "./component/HomePage/HomePage";
-import ArtistProfile from "./component/ArtistProfile/ArtistProfile";
-import AudioControlMobile from "./component/AudioControl/AudioControlMobile/AudioControlMobile";
-import { getMobileControlerShow } from "./redux/selectors/appSelectors";
+import { Navigate, Route, Routes } from "react-router-dom";
+import {
+  getInitializeApp,
+  getMobileControllerShow,
+} from "./redux/selectors/appSelectors";
 import { useSelector } from "react-redux";
 import { useLayoutEffect } from "react";
+import Layout from "./component/Layout/Layout";
+import { selectAuthorizationStatus } from "./redux/selectors/authorizationSelector";
+import { useInitialization } from "./hooks/useInitialization";
+import { CollectionPage } from "./pages";
+import { PlaylistPage } from "./pages";
+import { FavoritePage } from "./pages";
+import { ArtistPage } from "./pages";
+import { HomePage } from "./pages";
+import { AuthorizationPage } from "./pages";
 
 const App = () => {
-  const showMobileControler = useSelector((state) =>
-    getMobileControlerShow(state)
+  const showMobileController = useSelector((state) =>
+    getMobileControllerShow(state)
   );
+  const authorizationStatus = useSelector((state) =>
+    selectAuthorizationStatus(state)
+  );
+  const initializeApp = useSelector((state) => getInitializeApp(state));
+
+  useInitialization();
 
   useLayoutEffect(() => {
-    if (showMobileControler) {
+    if (showMobileController) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "visible";
     }
-  }, [showMobileControler])
+  }, [showMobileController]);
+
+  if (!initializeApp) {
+    return <div>...loading</div>;
+  }
+
+  if (!authorizationStatus) {
+    return (
+      <>
+        <AuthorizationPage />
+      </>
+    );
+  }
 
   return (
-    <div className="App">
-      <BrowserRouter>
-        <div className="wrapper">
-          <Header />
-          <Sitebar />
-          <AudioControlMobile />
-          <div className="content">
-            <Routes>
-              <Route path="/playlist/:id" element={<Playlist />} />
-              <Route path="" element={<HomePage />} />
-              <Route path="/artist/:id" element={<ArtistProfile />} />
-            </Routes>
-          </div>
-          <div className={showMobileControler ? "control_bar _active_control_bar" : "control_bar"}>
-            <AudioControlContainer />
-          </div>
-        </div>
-      </BrowserRouter>
-    </div>
+    <Layout>
+      <Routes>
+        <Route path="/playlist/:id" element={<PlaylistPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/artist/:id" element={<ArtistPage />} />
+        <Route path="/collection" element={<CollectionPage />} />
+        <Route path="/collection/favorite" element={<FavoritePage />} />
+
+        <Route path="/register" element={<Navigate to="/" />} />
+        <Route path="/login" element={<Navigate to="/" />} />
+      </Routes>
+    </Layout>
   );
 };
 
 export default App;
+
+// old content color #120405

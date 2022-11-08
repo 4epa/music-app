@@ -1,19 +1,23 @@
-import audioReducer from "./audioReducer";
-import playlistsReducer from "./playListsReducer";
-import currentPlaylistReducer from "./currentPlaylistReducer";
-import playListReducer from "./playListReducer";
-import artistReducer from "./artistReducer";
-import appReducer from "./appReducer";
+import audioReducer from "./slices/audioReducer";
+import playlistListReducer from "./slices/playlistListReducer";
+import currentPlaylistReducer from "./slices/currentPlaylistReducer";
+import playListReducer from "./slices/playlistReducer";
+import artistReducer from "./slices/artistReducer";
+import appReducer from "./slices/appReducer";
+import authorizationReducer from "./slices/authorizationReducer";
+import artistListReducer from "./slices/artistListReducer";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({
   reducer: {
     audio: audioReducer,
+    artistList: artistListReducer,
     artist: artistReducer,
-    playlists: playlistsReducer,
+    playlistList: playlistListReducer,
     playlist: playListReducer,
     currentPlaylist: currentPlaylistReducer,
-    appOptions: appReducer
+    appOptions: appReducer,
+    authorization: authorizationReducer
   },
 });
 

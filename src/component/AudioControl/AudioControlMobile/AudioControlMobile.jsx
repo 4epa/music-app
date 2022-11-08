@@ -1,59 +1,108 @@
-import { setIsPlay } from "../../../redux/audioReducer";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAudioIsPlay,
-  getCurrentAudio,
+  selectAudioIsPlay,
+  selectCurrentAudio,
 } from "../../../redux/selectors/audioSelectors";
-import IconButton from "@mui/material/IconButton";
-import PauseRounded from "@mui/icons-material/PauseRounded";
-import PlayArrowRounded from "@mui/icons-material/PlayArrowRounded";
-import style from "./AudioControlMobile.module.css";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import { setShowMobileAudioControler } from "../../../redux/appReducer";
+import { setShowMobileAudioController } from "../../../redux/slices/appReducer";
+import styled from "@emotion/styled";
+import PlayButton from "../../common/PlayButtons";
+import DownloadedImage from "../../common/DownloadedImage";
+
+const MobileControlWrapper = styled.div`
+  position: fixed;
+  bottom: 60px;
+  width: 100%;
+  z-index: 20;
+  background-color: #0e0e0e;
+
+  @media (min-width: 770px) {
+    display: none;
+  }
+`;
+
+const MobileControlContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 10px 5px 10px;
+  position: relative;
+  align-items: center;
+`;
+
+const MobileControlBackground = styled.div`
+  z-index: 21;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+`;
+
+const Description = styled.div`
+  color: rgba(255, 255, 255, 0.6);
+  display: grid;
+  grid-template-areas:
+    "cover title"
+    "cover author";
+  column-gap: 20px;
+  z-index: 25;
+`;
+
+const Cover = styled.div`
+  grid-area: cover;
+  position: relative;
+  width: 40px;
+  padding-bottom: 40px;
+
+  & img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+  }
+`;
+
+const Title = styled.h5`
+  grid-area: title;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 600;
+`;
+
+const Author = styled.h6`
+  font-size: 14px;
+  grid-area: author;
+`;
 
 const AudioControlMobile = () => {
   const dispatch = useDispatch();
 
-  const currentAudio = useSelector((state) => getCurrentAudio(state));
-  const audioIsPlay = useSelector((state) => getAudioIsPlay(state));
+  const currentAudio = useSelector((state) => selectCurrentAudio(state));
+  const audioIsPlay = useSelector((state) => selectAudioIsPlay(state));
 
   if (!currentAudio) {
     return <span></span>;
   }
 
   return (
-    <div className={style.mobile_control}>
-      <div className={style.mobile_control_container}>
-        <div
-          onClick={() => dispatch(setShowMobileAudioControler(true))}
-          className={style.bg__mobileControler}
-        ></div>
-        <div className={style.descripton}>
-          <div className={style.cover}>
-            <img src={currentAudio.cover} alt="#" />
-          </div>
-          <h5 className={style.title}>{currentAudio.title}</h5>
-          <h6 className={style.authot}>{currentAudio.author}</h6>
-        </div>
-        <div className={style.buttons}>
-          {!audioIsPlay ? (
-            <IconButton
-              onClick={() => dispatch(setIsPlay(true))}
-              sx={{ padding: "5px" }}
-            >
-              <PlayArrowRounded sx={{ fontSize: "30px", color: "#fff" }} />
-            </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => dispatch(setIsPlay(false))}
-              sx={{ padding: "5px" }}
-            >
-              <PauseRounded sx={{ fontSize: "30px", color: "#fff" }} />
-            </IconButton>
-          )}
-        </div>
-      </div>
+    <MobileControlWrapper>
+      <MobileControlContainer>
+        <MobileControlBackground
+          onClick={() => dispatch(setShowMobileAudioController(true))}
+        />
+        <Description>
+          <Cover>
+            <DownloadedImage src={currentAudio.cover} alt="#" />
+          </Cover>
+          <Title>{currentAudio.title}</Title>
+          <Author>{currentAudio.author}</Author>
+        </Description>
+        <PlayButton
+          audioIsPlay={audioIsPlay}
+          style={{ fontSize: "30px", color: "#fff", zIndex: 25 }}
+          buttonStyle={{ padding: "0px" }}
+        />
+      </MobileControlContainer>
       <Box
         sx={{
           width: "100%",
@@ -66,6 +115,7 @@ const AudioControlMobile = () => {
           size="small"
           value={currentAudio.currentTime}
           aria-label="Small"
+          max={currentAudio.duration}
           sx={{
             padding: "0px 0px",
             color: "#fff",
@@ -95,7 +145,7 @@ const AudioControlMobile = () => {
           }}
         />
       </Box>
-    </div>
+    </MobileControlWrapper>
   );
 };
 

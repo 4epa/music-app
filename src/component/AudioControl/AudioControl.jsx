@@ -1,44 +1,76 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import IconButton from "@mui/material/IconButton";
-import PauseRounded from "@mui/icons-material/PauseRounded";
-import PlayArrowRounded from "@mui/icons-material/PlayArrowRounded";
-import FastForwardRounded from "@mui/icons-material/FastForwardRounded";
-import FastRewindRounded from "@mui/icons-material/FastRewindRounded";
-import style from "./AudioContol.module.css";
 import AudioInfo from "./AudioInfo/AudioInfo";
 import CurrentPlaylist from "./CurrentPlaylist/CurrentPlaylist";
 import VolumeControl from "./VolumeControl/VolumeControl";
 import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setAudioNumber,
-  setCurrentAudio,
   setVolume,
-  setIsPlay,
-  setCurrentTime,
-  setAudioIsEnd,
-  setRewindTime,
-} from "../../redux/audioReducer";
+} from "../../redux/slices/audioReducer";
 import Audio from "../Audio/Audio";
-import { useEffect } from "react";
-import ShuffleIcon from "@mui/icons-material/Shuffle";
-import RepeatIcon from "@mui/icons-material/Repeat";
-import { useState } from "react";
-import RepeatOneIcon from "@mui/icons-material/RepeatOne";
-import { formatDuration, random } from "../../utils/helpers";
+import { formatDuration } from "../../utils/helpers";
 import {
-  getAudioIsPlay,
-  getAudioIsEnd,
-  getCurrentAudioNumber,
-  getVolume,
-  getCurrentPlaylist,
-  getRewindTime,
+  selectAudioIsPlay,
+  selectVolume,
+  selectAudioIsEnd,
+  selectCurrentPlaylist,
 } from "../../redux/selectors/audioSelectors";
-import ClearIcon from '@mui/icons-material/Clear';
-import { setShowMobileAudioControler } from "../../redux/appReducer";
+import ClearIcon from "@mui/icons-material/Clear";
+import { setShowMobileAudioController } from "../../redux/slices/appReducer";
+import ControlButtons from "./ControlButtons/ControlButtons";
+import styled from "@emotion/styled";
+import IconButton from "@mui/material/IconButton";
+
+const AudioControlContainer = styled.div`
+  width: 100%;
+  grid-template-columns: 1fr 1fr 1fr;
+  display: grid;
+  align-items: center;
+
+  @media (max-width: 770px) {
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.2fr 3fr 0.5fr;
+    display: grid;
+    align-items: center;
+    justify-content: space-between;
+    height: 85vh;
+  }
+`;
+
+const CloseButtonContainer = styled.div`
+  display: none;
+
+  @media (max-width: 770px) {
+    background-color: rgba(255, 255, 255, 0);
+    display: flex;
+    justify-content: flex-end;
+  }
+`;
+
+const ControlBar = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  @media (max-width: 770px) {
+    gap: 10px;
+  }
+`;
+
+const RightControlBar = styled.div`
+  justify-content: flex-end;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+
+  @media (max-width: 770px) {
+    display: none;
+  }
+`;
 
 const TinyText = styled(Typography)({
   color: "#fff",
@@ -48,245 +80,105 @@ const TinyText = styled(Typography)({
   letterSpacing: 0.2,
 });
 
-const nextOrPrevAudio = (audioNumber, action) => {
-  switch (action) {
-    case "prev":
-      --audioNumber;
-      break;
-    case "next":
-      ++audioNumber;
-      break;
-  }
-  return audioNumber;
+const sliderStyle = {
+  padding: "0px 0px",
+  color: "#fff",
+  height: 4,
+  "& .MuiSlider-thumb": {
+    width: 4,
+    height: 4,
+    "&:before": {
+      boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
+    },
+    "&:hover, &.Mui-focusVisible": {
+      boxShadow: `0px 0px 0px 0px ${"rgb(255 255 255 / 16%)"}`,
+      width: 6,
+      height: 6,
+    },
+    "&.Mui-active": {
+      width: 10,
+      height: 10,
+    },
+  },
+  "& .MuiSlider-rail": {
+    opacity: 0.28,
+  },
+  "& ": {
+    padding: "0px 0px 15px 0px",
+  },
 };
-
-const iconSize = (size) => {
-  return (screenWidth <= 450) ? `${size + 15}px` : `${size}px`
-}
-
-const RepeatButtonIcon = (loop, repeat) => {
-
-  if (loop) {
-    return (
-      <RepeatOneIcon sx={{ color: "#fff", fontSize: iconSize(18), opacity: "0.5" }} />
-    );
-  } else if (repeat) {
-    return (
-      <RepeatIcon sx={{ color: "#fff", fontSize: iconSize(18), opacity: "0.5" }} />
-    );
-  }
-  return <RepeatIcon sx={{ color: "#fff", fontSize: iconSize(18) }} />;
-};
-
-const screenWidth = window.screen.width;
 
 const AudioControl = ({ currentAudio }) => {
-  const audioIsPlay = useSelector((state) => getAudioIsPlay(state));
-  const audioIsEnd = useSelector((state) => getAudioIsEnd(state));
-  const currentAudioNumber = useSelector((state) =>
-    getCurrentAudioNumber(state)
-  );
-  const volume = useSelector((state) => getVolume(state));
-  const currentPlaylist = useSelector((state) => getCurrentPlaylist(state));
-  const rewindTime = useSelector((state) => getRewindTime(state));
+  const [rewindTime, setRewindTime] = useState(0)
+  const [currentTime, setCurrentTime] = useState(null)
 
-  const [stir, setStir] = useState(false);
-  const [repeat, setRepeat] = useState(false);
-  const [loop, setLoop] = useState(false);
+  const audioIsEnd = useSelector((state) => selectAudioIsEnd(state));
+  const currentPlaylist = useSelector((state) => selectCurrentPlaylist(state));
+  const audioIsPlay = useSelector((state) => selectAudioIsPlay(state));
+  const volume = useSelector((state) => selectVolume(state));
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (audioIsEnd) {
-      if (loop) {
-        dispatch(setCurrentTime(0));
-        dispatch(setIsPlay(true));
-        dispatch(setAudioIsEnd(false));
-      } else {
-        switchAudio(currentPlaylist, currentAudioNumber, "next");
-      }
-    }
-  }, [audioIsEnd]);
-
-  const randomAudio = (currentAudioNumber, currentPlaylist) => {
-    let audioNumber = random(0, currentPlaylist.length - 1);
-    if (audioNumber === currentAudioNumber)
-      return randomAudio(currentAudioNumber, currentPlaylist);
-    return audioNumber;
-  };
-
-  const switchAudio = (currentPlaylist, currentAudioNumber, action) => {
-
-    let audioNumber = currentAudioNumber;
-
-    if (stir) {
-      audioNumber = randomAudio(currentAudioNumber, currentPlaylist);
-    } else {
-      audioNumber = nextOrPrevAudio(currentAudioNumber, action);
-    }
-
-    if (audioNumber < 0 || audioNumber >= currentPlaylist.length) {
-      if (repeat) {
-        if (currentAudioNumber < 0) {
-          audioNumber = currentPlaylist.length - 1;
-        } else {
-          audioNumber = 0;
-        }
-      } else {
-        return dispatch(setAudioIsEnd(false));
-      }
-    }
-
-    dispatch(setAudioNumber(audioNumber));
-    dispatch(setCurrentTime(0));
-    dispatch(setIsPlay(true));
-    dispatch(setAudioIsEnd(false));
-
-    return dispatch(setCurrentAudio(currentPlaylist[audioNumber]));
-  };
-
-  const setStirStatus = () => {
-    if (stir) return setStir(false);
-    return setStir(true);
-  };
-
-  const setRepeatStatus = () => {
-    if (loop) {
-      setRepeat(false);
-      return setLoop(false);
-    } else if (repeat) {
-      return setLoop(true);
-    }
-    return setRepeat(true);
-  };
-
   const handleChange = (event, value) => {
-    dispatch(setCurrentTime(value));
-    dispatch(setRewindTime(value));
+    setCurrentTime(value);
+    setRewindTime(value);
   };
 
   return (
-    <div style={{height: "auto"}}>
-      <div className={style.control_container}>
-        <div onClick={() => dispatch(setShowMobileAudioControler(false))} className={style.close__btn}>
-          <ClearIcon sx={{color: "#fff"}} />
-        </div>
-        <AudioInfo
-          cover={currentAudio.cover}
-          title={currentAudio.title}
-          author={currentAudio.author}
-        />
-        <div className={style.audio_control}>
+    <>
+      <AudioControlContainer>
+        <CloseButtonContainer>
+          <IconButton
+            onClick={() => dispatch(setShowMobileAudioController(false))}
+            sx={{ padding: "0px" }}
+          >
+            <ClearIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        </CloseButtonContainer>
+        <AudioInfo currentPlaylist={currentPlaylist} audio={currentAudio} />
+        <ControlBar>
+          <ControlButtons
+            audioIsEnd={audioIsEnd}
+            currentPlaylist={currentPlaylist}
+            audioIsPlay={audioIsPlay}
+            currentAudio={currentAudio}
+          />
           <Box
             sx={{
+              width: "100%",
+              color: "#fff",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              mt: 0,
+              gap: "10px",
             }}
           >
-            <IconButton onClick={setStirStatus}>
-              {stir ? (
-                <ShuffleIcon
-                  sx={{ color: "#fff", fontSize: iconSize(18), opacity: "0.5" }}
-                />
-              ) : (
-                <ShuffleIcon sx={{ color: "#fff", fontSize: iconSize(18) }} />
-              )}
-            </IconButton>
-            <IconButton
-              onClick={() =>
-                switchAudio(currentPlaylist, currentAudioNumber, "prev")
-              }
-              sx={{ padding: "5px" }}
-              aria-label="previous song"
-            >
-              <FastRewindRounded sx={{ fontSize: iconSize(25), color: "#fff" }} />
-            </IconButton>
-            {!audioIsPlay ? (
-              <IconButton
-                onClick={() => dispatch(setIsPlay(true))}
-                sx={{ padding: "5px" }}
-              >
-                <PlayArrowRounded sx={{ fontSize: iconSize(30), color: "#fff" }} />
-              </IconButton>
-            ) : (
-              <IconButton
-                onClick={() => dispatch(setIsPlay(false))}
-                sx={{ padding: "5px" }}
-              >
-                <PauseRounded sx={{ fontSize:iconSize(30), color: "#fff" }} />
-              </IconButton>
-            )}
-            <IconButton
-              onClick={() =>
-                switchAudio(currentPlaylist, currentAudioNumber, "next")
-              }
-              sx={{ padding: "5px" }}
-              aria-label="next song"
-            >
-              <FastForwardRounded sx={{ fontSize: iconSize(25), color: "#fff" }} />
-            </IconButton>
-            <IconButton onClick={setRepeatStatus}>
-              {RepeatButtonIcon(loop, repeat)}
-            </IconButton>
-          </Box>
-          <Box sx={{ width: "100%", color: "#fff", display: "flex", alignItems: "center", gap: "10px" }}>
-          <TinyText>{formatDuration(currentAudio.currentTime)}</TinyText>
+            <TinyText>{formatDuration(currentTime)}</TinyText>
             <Slider
               onChange={handleChange}
               aria-label="time-indicator"
               size="small"
-              value={currentAudio.currentTime}
+              value={currentTime}
               min={0}
               step={1}
               max={currentAudio.duration}
-              sx={{
-                padding: "0px 0px",
-                color: "#fff",
-                height: 4,
-                "& .MuiSlider-thumb": {
-                  width: 4,
-                  height: 4,
-                  "&:before": {
-                    boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
-                  },
-                  "&:hover, &.Mui-focusVisible": {
-                    boxShadow: `0px 0px 0px 0px ${"rgb(255 255 255 / 16%)"}`,
-                    width: 6,
-                    height: 6,
-                  },
-                  "&.Mui-active": {
-                    width: 10,
-                    height: 10,
-                  },
-                },
-                "& .MuiSlider-rail": {
-                  opacity: 0.28,
-                },
-                "& ": {
-                  padding: "0px 0px 15px 0px",
-                }
-              }}
+              sx={sliderStyle}
             />
             <TinyText>{formatDuration(currentAudio.duration)}</TinyText>
           </Box>
-          <div className={style.timer_container}>
-
-          </div>
-        </div>
-        <div className={style.right__controle_containe}>
+        </ControlBar>
+        <RightControlBar>
           <VolumeControl volume={volume} setVolume={setVolume} />
           <CurrentPlaylist />
-        </div>
-      </div>
+        </RightControlBar>
+      </AudioControlContainer>
       <Audio
         currentAudio={currentAudio}
         volume={volume}
         audioIsPlay={audioIsPlay}
         rewindTime={rewindTime}
+        setCurrentTime={setCurrentTime}
       />
-    </div>
+    </>
   );
 };
 
